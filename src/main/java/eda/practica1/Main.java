@@ -1,14 +1,14 @@
 package eda.practica1;
 
-/**
- *
- * @author Eseebold001
- */
 public class Main {
 
     public static void main(String[] args) {
+    ListaActores listaActores = new ListaActores();
+    ListaPeliculas listaPeliculas = new ListaPeliculas();
 
-   //Lector.getInstance().leerFichero("./resources/actors_and_films_2023.txt");
-   Lector.getInstance().leerCarpeta("./resources");
-}
+    Lector lector = new Lector(listaActores, listaPeliculas);
+    Menu menu = new Menu(lector, listaActores, listaPeliculas);
+
+    menu.mostrarMenu();
+    }
 }

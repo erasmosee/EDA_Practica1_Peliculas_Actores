@@ -1,16 +1,32 @@
 package eda.practica1;
 
-import java.util.List;
-
 public class Actor {
-  Integer idActor;
-  String NombreActor;
-  List<ListaPeliculas> ListaPeliculas;
-    
-    public Actor (Integer idActor, String NombreActor, List<ListaPeliculas> ListaPeliculas){
-      
-      idActor = idActor;
-      NombreActor = NombreActor;
-      ListaPeliculas = ListaPeliculas;
+
+    String idActor;
+    String nombreActor;
+
+    public Actor(String idActor, String nombreActor) {
+
+        this.idActor = idActor;
+        this.nombreActor = nombreActor;
     }
+
+    public String getIdActor() {
+        return idActor;
+    }
+
+    public void setIdActor(String idActor) {
+        this.idActor = idActor;
+    }
+
+    public String getNombreActor() {
+        return nombreActor;
+    }
+
+    public void setNombreActor(String nombreActor) {
+        this.nombreActor = nombreActor;
+    }
+
+   
+
 }

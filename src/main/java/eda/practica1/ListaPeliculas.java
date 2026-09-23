@@ -1,12 +1,24 @@
 package eda.practica1;
 
+import java.util.HashMap;
+
 public class ListaPeliculas {
-  Integer idPelicula;
-  String NombrePelicula;
-    
-    public ListaPeliculas (Integer idPelicula, String NombrePelicula){
-      
-      idPelicula = idPelicula;
-      NombrePelicula = NombrePelicula;
-    }
+
+  private final HashMap<String, Pelicula> listaPeliculas;
+
+  public ListaPeliculas() {
+    listaPeliculas = new HashMap<>();
+  }
+
+  public void agregar(Pelicula pelicula) {
+    listaPeliculas.put(pelicula.getIdPelicula(), pelicula);
+  }
+
+  public Pelicula buscar(String idPelicula) {
+    return listaPeliculas.get(idPelicula);
+  }
+
+  public HashMap<String, Pelicula> getListaPeliculas() {
+    return listaPeliculas;
+  }
 }
