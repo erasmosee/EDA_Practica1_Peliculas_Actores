@@ -9,6 +9,8 @@ public class Menu {
     private final ListaActores listaActores;
     private final ListaPeliculas listaPeliculas;
     private boolean datosCargados;
+    private final Idioma i18n = Idioma.getInstance();
+
 
     public Menu(Lector lector, ListaActores listaActores, ListaPeliculas listaPeliculas) {
         this.sc = new Scanner(System.in);
@@ -19,29 +21,28 @@ public class Menu {
     }
 
     public void mostrarMenu() {
-        Idioma i18n = Idioma.getInstance();
         int opcion = -1;
 
         while (opcion != 0) {
             System.out.println("\n" + i18n.get("menu.texto.titulo"));
 
             if (!datosCargados) {
-                System.out.println(i18n.get("menu.opcion.objetivo.1"));
+                System.out.println(i18n.get("menu.opcion.1.cargar.datos"));
             } else {
-                System.out.println(i18n.get("menu.opcion.objetivo.1.bis"));
-                System.out.println(i18n.get("menu.opcion.objetivo.2"));
-                System.out.println(i18n.get("menu.opcion.objetivo.3"));
-                System.out.println(i18n.get("menu.opcion.objetivo.4"));
-                System.out.println(i18n.get("menu.opcion.objetivo.5"));
-                System.out.println(i18n.get("menu.opcion.objetivo.6"));
-                System.out.println(i18n.get("menu.opcion.objetivo.7"));
-                System.out.println(i18n.get("menu.opcion.objetivo.8"));
-                System.out.println(i18n.get("menu.opcion.objetivo.9"));
-                System.out.println(i18n.get("menu.opcion.extra.utilidades"));
+                System.out.println(i18n.get("menu.opcion.1.recargar.datos"));
+                System.out.println(i18n.get("menu.opcion.2.buscar.actor"));
+                System.out.println(i18n.get("menu.opcion.3.insertar.actor"));
+                System.out.println(i18n.get("menu.opcion.4.peliculas.actor"));
+                System.out.println(i18n.get("menu.opcion.5.actores.peliculas"));
+                System.out.println(i18n.get("menu.opcion.6.modificar.anio"));
+                System.out.println(i18n.get("menu.opcion.7.borrar.actor"));
+                System.out.println(i18n.get("menu.opcion.8.guardar.fichero"));
+                System.out.println(i18n.get("menu.opcion.9.actores.nomApe"));
+                System.out.println(i18n.get("menu.opcion.10.utilidades"));
             }
 
-            System.out.println(i18n.get("menu.opcion.extra.salir"));
-            System.out.print(i18n.get("menu.texto.seleccionarOpcion"));
+            System.out.println(i18n.get("menu.opcion.0.salir"));
+            System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
 
             try {
                 opcion = Integer.parseInt(sc.nextLine());
@@ -53,7 +54,6 @@ public class Menu {
     }
 
     private void procesarOpcion(int opcion) {
-        Idioma i18n = Idioma.getInstance();
 
         if (!datosCargados && opcion > 1) {
             System.out.println(i18n.get("msg.opcion.invalida"));
@@ -68,18 +68,17 @@ public class Menu {
             case 10 ->
                 mostrarMenuUtilidades();
             case 0 ->
-                System.out.println(i18n.get("menu.opcion.extra.saliendo"));
+                System.out.println(i18n.get("menu.opcion.0.saliendo"));
             default ->
-                System.out.println(i18n.get("msg.opcion_invalida"));
+                System.out.println(i18n.get("msg.opcion.invalida"));
         }
 
     }
 
     private void cargarDatos() {
-        Idioma i18n = Idioma.getInstance();
         String rutaDefecto = "./resources";
 
-        System.out.print(i18n.get("menu.opcion.objetivo.1.input.ruta", rutaDefecto));
+        System.out.print(i18n.get("menu.opcion.1.insertar.ruta", rutaDefecto));
         String ruta = sc.nextLine().trim();
 
         if (ruta.isEmpty()) {
@@ -91,14 +90,13 @@ public class Menu {
     }
 
     private void mostrarMenuUtilidades() {
-        Idioma i18n = Idioma.getInstance();
         int opcion = -1;
 
         while (opcion != 0) {
-            System.out.println("\n" + i18n.get("menu.texto.extra.utilidades"));
-            System.out.println(i18n.get("menu.opcion.extra.utilidades.1"));
-            System.out.println(i18n.get("menu.opcion.atras"));
-            System.out.print(i18n.get("menu.texto.seleccionarOpcion"));
+            System.out.println("\n" + i18n.get("menu.texto.utilidades"));
+            System.out.println(i18n.get("menu.opcion.10.1.letras.raras"));
+            System.out.println(i18n.get("menu.opcion.0.atras"));
+            System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
 
             try {
                 opcion = Integer.parseInt(sc.nextLine());
@@ -107,7 +105,7 @@ public class Menu {
                     case 1 ->
                         Utils.mostrarLetrasRaras(listaActores, listaPeliculas);
                     case 0 ->
-                        System.out.println(i18n.get("menu.opcion.extra.utilidades.volver"));
+                        System.out.println(i18n.get("menu.opcion.10.utilidades.volver"));
                     default ->
                         System.out.println(i18n.get("msg.opcion.invalida"));
                 }

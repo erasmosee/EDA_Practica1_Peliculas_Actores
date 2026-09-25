@@ -4,43 +4,49 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class ListaActores {
-  private final Scanner sc;
-  private final HashMap<String, Actor> listaActores;
 
-  public ListaActores() {
-    this.sc = new Scanner(System.in);
-    listaActores = new HashMap<>();
-  }
+    private final Scanner sc;
+    private final HashMap<String, Actor> listaActores;
+    private final Idioma i18n = Idioma.getInstance();
 
-  public void agregar(Actor Actor) {
-    listaActores.put(Actor.getIdActor(), Actor);
-  }
+    public ListaActores() {
+        this.sc = new Scanner(System.in);
+        listaActores = new HashMap<>();
+    }
 
-  public Actor buscar(String idActor) {
-    return listaActores.get(idActor);
-  }
+    public void agregar(Actor Actor) {
+        listaActores.put(Actor.getIdActor(), Actor);
+    }
 
-  public HashMap<String, Actor> getListaActores() {
-    return listaActores;
-  }
+    public Actor buscar(String idActor) {
+        return listaActores.get(idActor);
+    }
 
-   public void buscarActorID() {
-        Idioma i18n = Idioma.getInstance();
+    public HashMap<String, Actor> getListaActores() {
+        return listaActores;
+    }
 
-        System.out.print(i18n.get("menu.opcion.objetivo.2.input.actor"));
+    public void buscarActorID() {
+
+        System.out.print(i18n.get("menu.opcion.2.input.actor"));
         String idActorBusqueda = sc.nextLine().trim();
         if (!idActorBusqueda.matches("\\d+")) {
-            System.out.println(i18n.get("menu.opcion.objetivo.2.id.no.valido"));
+            System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
             return;
         }
 
         Actor actor = buscar(idActorBusqueda);
 
         if (actor == null) {
-            System.out.println(i18n.get("menu.opcion.objetivo.2.actor.no.encontrado"));
+            System.out.println(i18n.get("menu.opcion.2.actor.no.encontrado"));
         } else {
-            System.out.println(i18n.get("menu.opcion.objetivo.2.actor.encontrado") + actor.getIdActor()
+            System.out.println(i18n.get("menu.opcion.2.actor.encontrado") + actor.getIdActor()
                     + " - " + actor.getNombreActor());
         }
+    }
+
+    public void insertarActorID() {
+
+//
     }
 }

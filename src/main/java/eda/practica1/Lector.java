@@ -12,6 +12,8 @@ public class Lector {
 
     private final ListaActores listaActores;
     private final ListaPeliculas listaPeliculas;
+    private final Idioma i18n = Idioma.getInstance();
+
     //private int contador = 0;
 
     public Lector(ListaActores listaActores, ListaPeliculas listaPeliculas) {
@@ -29,7 +31,7 @@ public class Lector {
                 leerFichero(elemento.toString());
             });
         } catch (IOException e) {
-            System.err.println("Error accediendo a carpeta: " + rutaCarpeta);
+            System.out.print(i18n.get("msg.error.acceso.carpeta", rutaCarpeta));
         }
 
     }
@@ -37,6 +39,8 @@ public class Lector {
     public void leerFichero(String elemento) {
 
         try {
+             System.out.print(i18n.get("msg.info.procesar.fichero", ( elemento.substring(elemento.length() - 25))));
+
             System.out.println("Procesando contenido de: " + elemento.substring(elemento.length() - 25));
 
             try (Scanner entrada = new Scanner(Files.newInputStream(Paths.get(elemento)), StandardCharsets.UTF_8)) {
