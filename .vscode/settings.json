@@ -9,5 +9,6 @@
             ]
         }
     },
-    "terminal.integrated.defaultProfile.windows": "PowerShell UTF-8"
+    "terminal.integrated.defaultProfile.windows": "PowerShell UTF-8",
+    "maven.executable.path": "C:/Users/erasm/scoop/apps/maven/current/bin/mvn.cmd"
 }

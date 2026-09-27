@@ -65,7 +65,7 @@ public class Menu {
                 cargarDatos();
             case 2 ->
                 listaActores.buscarActorID();
-                case 3 ->
+            case 3 ->
                 listaActores.insertarActorID();
             case 10 ->
                 mostrarMenuUtilidades();

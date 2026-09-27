@@ -5,9 +5,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.stream.Stream;
-import java.util.HashMap;
 public class Lector {
 
     private final ListaActores listaActores;
@@ -30,7 +30,7 @@ public class Lector {
                 leerFichero(elemento.toString());
             });
         } catch (IOException e) {
-            System.out.print(i18n.get("msg.error.acceso.carpeta", rutaCarpeta));
+            System.out.println(i18n.get("msg.error.acceso.carpeta", rutaCarpeta));
         }
 
     }
@@ -38,7 +38,7 @@ public class Lector {
     public void leerFichero(String elemento) {
 
         try {
-            System.out.print(i18n.get("msg.info.procesar.fichero", (elemento.substring(elemento.length() - 25))));
+            System.out.println(i18n.get("msg.info.procesar.fichero", (elemento.substring(elemento.length() - 25))));
 
             try (Scanner entrada = new Scanner(Files.newInputStream(Paths.get(elemento)), StandardCharsets.UTF_8)) {
                 String linea;
@@ -82,7 +82,7 @@ public class Lector {
             }
 
         } catch (Exception e) {
-            System.err.print(i18n.get("msg.error.procesando.fichero", elemento));
+            System.err.println(i18n.get("msg.error.procesando.fichero", elemento));
         }
     }
 
