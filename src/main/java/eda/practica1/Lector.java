@@ -28,15 +28,22 @@ public class Lector {
             if (ficheros != null && ficheros.length > 0) {
 
                 int totalFicheros = ficheros.length;
-                int almohadillasPorFichero = 100 / totalFicheros;
+                int totalAlmohadillas = 100;
+                int almohadillasPintadas = 0;
+
+                 System.out.println(i18n.get("msg.info.procesar.ficheros", (totalFicheros)));
+
                 Utils.iniciarbarracarga();
 
                 for (int i = 0; i < totalFicheros; i++) {
                     leerFichero(ficheros[i].getPath());
 
-                    for (int j = 0; j < almohadillasPorFichero; j++) {
+                    int almohadillasQueDeberiaHaber = ((i + 1) * totalAlmohadillas) / totalFicheros;
+                    int almohadillasAPintar = almohadillasQueDeberiaHaber - almohadillasPintadas;
+                    for (int j = 0; j < almohadillasAPintar; j++) {
                         Utils.avanzarbarracarga();
                     }
+                    almohadillasPintadas = almohadillasQueDeberiaHaber;
                 }
                 Utils.finalizarbarracarga();
             }
@@ -50,7 +57,6 @@ public class Lector {
     public void leerFichero(String elemento) {
 
         try {
-            System.out.println(i18n.get("msg.info.procesar.fichero", (elemento.substring(elemento.length() - 25))));
 
             try (Scanner entrada = new Scanner(Files.newInputStream(Paths.get(elemento)), StandardCharsets.UTF_8)) {
                 String linea;
