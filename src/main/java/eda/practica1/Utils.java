@@ -63,4 +63,45 @@ public class Utils {
         } while (listaActores.existe(idAleatorio));
         return idAleatorio;
     }
+
+    public static void barracarga() {
+        int numElementos = 8;
+        int numAlmohadillas = 80;
+
+        barracarga(numElementos, numAlmohadillas);
+    }
+
+    private static void barracarga(int numElementos, int numAlmohadillas) {
+        iniciarbarracarga();
+
+        int x = 0;
+        while (x < numElementos) {
+            int y = 0;
+            while (y < numAlmohadillas / numElementos) {
+                avanzarbarracarga();
+                y++;
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            x++;
+        }
+
+        finalizarbarracarga();
+    }
+
+    public static void iniciarbarracarga() {
+        System.out.print("Cargando[");
+    }
+
+    public static void avanzarbarracarga() {
+        System.out.print("#");
+    }
+
+    public static void finalizarbarracarga() {
+        System.out.println("]");
+    }
+
 }

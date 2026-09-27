@@ -97,6 +97,8 @@ public class Menu {
         while (opcion != 0) {
             System.out.println("\n" + i18n.get("menu.texto.utilidades"));
             System.out.println(i18n.get("menu.opcion.10.1.letras.raras"));
+            System.out.println(i18n.get("menu.opcion.10.2.id.aleatorio"));
+            System.out.println(i18n.get("menu.opcion.10.3.barra.carga"));
             System.out.println(i18n.get("menu.opcion.0.atras"));
             System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
 
@@ -108,6 +110,8 @@ public class Menu {
                         Utils.mostrarLetrasRaras(listaActores, listaPeliculas);
                     case 2 ->
                         Utils.generarIdActor(listaActores);
+                    case 3 -> 
+                        Utils.barracarga();
                     case 0 ->
                         System.out.println(i18n.get("menu.opcion.10.utilidades.volver"));
                     default ->

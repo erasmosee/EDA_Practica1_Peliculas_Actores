@@ -1,13 +1,12 @@
 package eda.practica1;
 
-import java.io.IOException;
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.stream.Stream;
+
 public class Lector {
 
     private final ListaActores listaActores;
@@ -22,15 +21,28 @@ public class Lector {
 
     public void leerCarpeta(String rutaCarpeta) {
 
-        try (Stream<Path> cadena = Files.list(Paths.get(rutaCarpeta))) {
-            System.out.println("rutaCarpeta: " + rutaCarpeta);
+        try {
+            File carpeta = new File(rutaCarpeta);
+            File[] ficheros = carpeta.listFiles();
 
-            cadena.forEach(elemento -> {
-                //   System.out.println("elemento: " + elemento);
-                leerFichero(elemento.toString());
-            });
-        } catch (IOException e) {
-            System.out.println(i18n.get("msg.error.acceso.carpeta", rutaCarpeta));
+            if (ficheros != null && ficheros.length > 0) {
+
+                int totalFicheros = ficheros.length;
+                int almohadillasPorFichero = 100 / totalFicheros;
+                Utils.iniciarbarracarga();
+
+                for (int i = 0; i < totalFicheros; i++) {
+                    leerFichero(ficheros[i].getPath());
+
+                    for (int j = 0; j < almohadillasPorFichero; j++) {
+                        Utils.avanzarbarracarga();
+                    }
+                }
+                Utils.finalizarbarracarga();
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error al acceder a la carpeta");
         }
 
     }
