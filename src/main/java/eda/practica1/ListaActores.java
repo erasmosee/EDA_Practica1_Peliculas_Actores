@@ -3,6 +3,7 @@ package eda.practica1;
 import java.util.HashMap;
 import java.util.Scanner;
 
+
 public class ListaActores {
 
     private final Scanner sc;
@@ -26,11 +27,20 @@ public class ListaActores {
         return listaActores;
     }
 
-    public void buscarActorID() {
+    public boolean  existe(String idActor) {
+        Actor actor = buscar(idActor);
+        if (actor == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    public void buscarActorID() {
+//ID Actor 60576424
         System.out.print(i18n.get("menu.opcion.2.input.actor"));
         String idActorBusqueda = sc.nextLine().trim();
-        if (!idActorBusqueda.matches("\\d+")) {
+        if (!Utils.validarIdNumerico(idActorBusqueda)) {
             System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
             return;
         }
@@ -46,7 +56,22 @@ public class ListaActores {
     }
 
     public void insertarActorID() {
+        System.out.print(i18n.get("menu.opcion.3.input.nombre"));
+        String nombreActor = sc.nextLine().trim();
+        if (!Utils.validarNombre(nombreActor)) {
+            System.out.println(i18n.get("msg.opcion.validar.nombre"));
+            return;
+        }
+        System.out.print(i18n.get("menu.opcion.3.input.pelicula"));
+        String idPelicula = sc.nextLine().trim();
 
-//
+        if (!Utils.validarIdNumerico(idPelicula)) {
+            System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
+            return;
+        }
+        String idActorBusqueda = Utils.generarIdActor(this);
+        Actor nuevoActor = new Actor(idActorBusqueda, nombreActor);
+        agregar(nuevoActor);
+
     }
 }

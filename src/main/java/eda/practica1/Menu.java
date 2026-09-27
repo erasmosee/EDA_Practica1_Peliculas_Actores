@@ -65,6 +65,8 @@ public class Menu {
                 cargarDatos();
             case 2 ->
                 listaActores.buscarActorID();
+                case 3 ->
+                listaActores.insertarActorID();
             case 10 ->
                 mostrarMenuUtilidades();
             case 0 ->
@@ -104,6 +106,8 @@ public class Menu {
                 switch (opcion) {
                     case 1 ->
                         Utils.mostrarLetrasRaras(listaActores, listaPeliculas);
+                    case 2 ->
+                        Utils.generarIdActor(listaActores);
                     case 0 ->
                         System.out.println(i18n.get("menu.opcion.10.utilidades.volver"));
                     default ->

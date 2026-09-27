@@ -6,8 +6,8 @@ import java.util.Set;
 public class Utils {
 
     public static void mostrarLetrasRaras(ListaActores listaActores, ListaPeliculas listaPeliculas) {
-    //Esta funcion es muy ineficiente, pero necesaria para verificar que se muestran todas las letras de los ficheros correctamente.
-    
+        //Esta funcion es muy ineficiente, pero necesaria para verificar que se muestran todas las letras de los ficheros correctamente.
+
         //se ha usado IA para organizar las letras en grupos
         String letrasAutorizadas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "ÑÁÉÍÓÚ" // Español (Ñ y tildes estándar)
@@ -47,4 +47,21 @@ public class Utils {
         System.out.println("Letras distintas encontradas: " + letrasEncontradas);
     }
 
+    public static boolean validarIdNumerico(String id) {
+        return id.matches("\\d+");
+    }
+
+    public static boolean validarNombre(String nombre) {
+        return nombre.matches("^.{4,}$");
+    }
+
+    public static String generarIdActor(ListaActores listaActores) {
+
+        String idAleatorio = String.valueOf((Math.random() * 90000000) + 10000000);
+
+        if (listaActores.existe(idAleatorio)) {
+            idAleatorio = generarIdActor(listaActores);
+        }
+        return idAleatorio;
+    }
 }

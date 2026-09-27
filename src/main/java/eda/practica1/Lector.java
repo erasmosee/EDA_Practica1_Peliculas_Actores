@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.stream.Stream;
-
+import java.util.HashMap;
 public class Lector {
 
     private final ListaActores listaActores;
@@ -15,7 +15,6 @@ public class Lector {
     private final Idioma i18n = Idioma.getInstance();
 
     //private int contador = 0;
-
     public Lector(ListaActores listaActores, ListaPeliculas listaPeliculas) {
         this.listaActores = listaActores;
         this.listaPeliculas = listaPeliculas;
@@ -39,9 +38,7 @@ public class Lector {
     public void leerFichero(String elemento) {
 
         try {
-             System.out.print(i18n.get("msg.info.procesar.fichero", ( elemento.substring(elemento.length() - 25))));
-
-            System.out.println("Procesando contenido de: " + elemento.substring(elemento.length() - 25));
+            System.out.print(i18n.get("msg.info.procesar.fichero", (elemento.substring(elemento.length() - 25))));
 
             try (Scanner entrada = new Scanner(Files.newInputStream(Paths.get(elemento)), StandardCharsets.UTF_8)) {
                 String linea;
@@ -67,7 +64,7 @@ public class Lector {
 
                             Pelicula pelicula = listaPeliculas.buscar(idPelicula);
                             if (pelicula == null) {
-                                pelicula = new Pelicula(idPelicula, nombrePelicula, anioPelicula, new java.util.HashMap<>());
+                                pelicula = new Pelicula(idPelicula, nombrePelicula, anioPelicula, new HashMap<>());
                                 listaPeliculas.agregar(pelicula);
                             }
 
@@ -78,14 +75,14 @@ public class Lector {
                             //     System.out.println("Líneas leídas: " + contador + "\t" + idActor + " ### " + nombreActor);
                             // }
                         } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
-                            System.err.println("Error procesando línea en " + elemento + ": " + linea);
+                            System.err.print(i18n.get("msg.error.procesando.linea", elemento, linea));
                         }
                     }
                 }
             }
 
         } catch (Exception e) {
-            System.err.println("Error procesando elemento: " + elemento);
+            System.err.print(i18n.get("msg.error.procesando.fichero", elemento));
         }
     }
 
