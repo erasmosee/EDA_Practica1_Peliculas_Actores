@@ -33,6 +33,7 @@ public class Menu {
                 System.out.println(i18n.get("menu.opcion.3.insertar.actor"));
                 System.out.println(i18n.get("menu.opcion.4.peliculas.actor"));
                 System.out.println(i18n.get("menu.opcion.5.actores.peliculas"));
+                System.out.println(i18n.get("menu.opcion.6.modificar.anio"));
                 System.out.println(i18n.get("menu.opcion.7.borrar.actor"));
                 System.out.println(i18n.get("menu.opcion.8.guardar.fichero"));
                 System.out.println(i18n.get("menu.opcion.9.actores.nomApe"));
@@ -51,6 +52,51 @@ public class Menu {
         }
     }
 
+    private void mostrarMenuUtilidades() {
+        int opcion = -1;
+
+        while (opcion != 0) {
+            System.out.println("\n" + i18n.get("menu.texto.utilidades"));
+            System.out.println(i18n.get("menu.opcion.10.1.letras.raras"));
+            System.out.println(i18n.get("menu.opcion.10.2.id.aleatorio"));
+            System.out.println(i18n.get("menu.opcion.10.3.barra.carga"));
+            System.out.println(i18n.get("menu.opcion.10.4.ficha.pelicula"));
+            System.out.println(i18n.get("menu.opcion.10.5.revisar.peliculas"));
+            System.out.println(i18n.get("menu.opcion.10.6.revisar.actores"));
+            System.out.println(i18n.get("menu.opcion.0.atras"));
+            System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
+
+            try {
+                opcion = Integer.parseInt(sc.nextLine());
+                procesarOpcionUtilidades(opcion);
+            } catch (NumberFormatException e) {
+                System.out.println(i18n.get("msg.opcion.invalida"));
+            }
+
+        }
+    }
+
+    private void mostrarMenuBorrado() {
+        int opcion = -1;
+
+        while (opcion != 0) {
+            System.out.println("\n" + i18n.get("menu.texto.borrado"));
+            System.out.println(i18n.get("menu.opcion.7.borrado.logico"));
+            System.out.println(i18n.get("menu.opcion.7.borrado.definitivo"));
+            System.out.println(i18n.get("menu.opcion.7.recuperacion.logica"));
+            System.out.println(i18n.get("menu.opcion.0.atras"));
+            System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
+
+            try {
+                opcion = Integer.parseInt(sc.nextLine());
+                procesarOpcionBorrado(opcion);
+            } catch (NumberFormatException e) {
+                System.out.println(i18n.get("msg.opcion.invalida"));
+            }
+
+        }
+    }
+
     private void procesarOpcion(int opcion) {
 
         if (!datosCargados && opcion > 1) {
@@ -65,6 +111,10 @@ public class Menu {
                 buscarActor();
             case 3 ->
                 insertarActor();
+            case 4 ->
+                devolverPeliculasActor();
+            case 6 ->
+                modificarAnioPelicula();
             case 7 ->
                 mostrarMenuBorrado();
             case 10 ->
@@ -163,7 +213,7 @@ public class Menu {
             return;
         }
 
-        int anio = solicitarAnioParticipacion();
+        int anio = solicitarAnio("menu.opcion.input.anio");
         if (anio == -1) {
             return;
         }
@@ -223,51 +273,6 @@ public class Menu {
 
     }
 
-    private void mostrarMenuUtilidades() {
-        int opcion = -1;
-
-        while (opcion != 0) {
-            System.out.println("\n" + i18n.get("menu.texto.utilidades"));
-            System.out.println(i18n.get("menu.opcion.10.1.letras.raras"));
-            System.out.println(i18n.get("menu.opcion.10.2.id.aleatorio"));
-            System.out.println(i18n.get("menu.opcion.10.3.barra.carga"));
-            System.out.println(i18n.get("menu.opcion.10.4.ficha.pelicula"));
-            System.out.println(i18n.get("menu.opcion.10.5.revisar.peliculas"));
-            System.out.println(i18n.get("menu.opcion.10.6.revisar.actores"));
-            System.out.println(i18n.get("menu.opcion.0.atras"));
-            System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
-
-            try {
-                opcion = Integer.parseInt(sc.nextLine());
-                procesarOpcionUtilidades(opcion);
-            } catch (NumberFormatException e) {
-                System.out.println(i18n.get("msg.opcion.invalida"));
-            }
-
-        }
-    }
-
-    private void mostrarMenuBorrado() {
-        int opcion = -1;
-
-        while (opcion != 0) {
-            System.out.println("\n" + i18n.get("menu.texto.borrado"));
-            System.out.println(i18n.get("menu.opcion.7.borrado.logico"));
-            System.out.println(i18n.get("menu.opcion.7.borrado.definitivo"));
-            System.out.println(i18n.get("menu.opcion.7.recuperacion.logica"));
-            System.out.println(i18n.get("menu.opcion.0.atras"));
-            System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
-
-            try {
-                opcion = Integer.parseInt(sc.nextLine());
-                procesarOpcionBorrado(opcion);
-            } catch (NumberFormatException e) {
-                System.out.println(i18n.get("msg.opcion.invalida"));
-            }
-
-        }
-    }
-
     private String solicitarIdPelicula() {
 
         System.out.print(i18n.get("menu.opcion.input.pelicula"));
@@ -279,14 +284,66 @@ public class Menu {
         return idPelicula;
     }
 
-    private int solicitarAnioParticipacion() {
-        System.out.print(i18n.get("menu.opcion.input.anio"));
-        int anio = Integer.parseInt(sc.nextLine().trim());
+    private int solicitarAnio(String claveMensaje) {
+        System.out.print(i18n.get(claveMensaje));
+        int anio;
+        try {
+            anio = Integer.parseInt(sc.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println(i18n.get("msg.opcion.validar.anio"));
+            return -1;
+        }
+
         if (!Utils.validarAnio(anio)) {
             System.out.println(i18n.get("msg.opcion.validar.anio"));
             return -1;
         }
         return anio;
+    }
+
+    private void modificarAnioPelicula() {
+        String idPelicula = solicitarIdPelicula();
+        if (idPelicula == null) {
+            return;
+        }
+
+        Pelicula pelicula = listaPeliculas.buscarPeliculaPorId(idPelicula);
+        if (pelicula == null) {
+            System.out.println(i18n.get("menu.opcion.6.pelicula.no.encontrada"));
+            return;
+        }
+
+        java.util.ArrayList<Integer> anios = pelicula.devolverAniosParticipacion();
+        if (anios.isEmpty()) {
+            System.out.println(i18n.get("msg.pelicula.sin.participaciones"));
+            return;
+        }
+
+        System.out.println(i18n.get("msg.pelicula.anios.participacion", anios));
+        int anioOrigen = solicitarAnio("menu.opcion.input.anio.origen");
+        if (anioOrigen == -1) {
+            return;
+        }
+        if (!anios.contains(anioOrigen)) {
+            System.out.println(i18n.get("msg.anio.sin.participaciones", String.valueOf(anioOrigen)));
+            return;
+        }
+
+        int anioNuevo = solicitarAnio("menu.opcion.input.anio.nuevo");
+        if (anioNuevo == -1) {
+            return;
+        }
+        if (anioNuevo == anioOrigen) {
+            System.out.println(i18n.get("msg.anio.igual"));
+            return;
+        }
+
+        if (pelicula.modificarAnioParticipaciones(anioOrigen, anioNuevo)) {
+            System.out.println(i18n.get("msg.anio.modificado",
+                    String.valueOf(anioOrigen), String.valueOf(anioNuevo), pelicula.getNombrePelicula()));
+        } else {
+            System.out.println(i18n.get("msg.anio.no.modificado"));
+        }
     }
 
     public void consultarFichaPelicula() {
@@ -296,10 +353,72 @@ public class Menu {
         if (pelicula == null) {
             System.out.println(i18n.get("menu.opcion.6.pelicula.no.encontrada"));
         } else {
-            System.out.println(i18n.get("msg.ficha.pelicula", pelicula.getIdPelicula()));
-            System.out.println(i18n.get("msg.ficha.pelicula.nombre", pelicula.getNombrePelicula()));
+            System.out.println();
+            System.out.println(i18n.get("msg.ficha.pelicula"));
+            ImprimirIdPelicula(pelicula);
+            ImprimirNombrePelicula(pelicula);
+            ImprimirAniosPelicula(pelicula);
+            ImprimirActoresPelicula(pelicula);
+            ImprimirActoresporAnioParticipacion(pelicula);
+        }
+    }
+
+    private void ImprimirIdPelicula(Pelicula pelicula) {
+        System.out.println(i18n.get("msg.ficha.pelicula.id", pelicula.getIdPelicula()));
+    }
+
+    private void ImprimirNombrePelicula(Pelicula pelicula) {
+        System.out.println(i18n.get("msg.ficha.pelicula.nombre", pelicula.getNombrePelicula()));
+    }
+
+    private void ImprimirAniosPelicula(Pelicula pelicula) {
+        System.out.print(i18n.get("msg.ficha.pelicula.anios"));
+        boolean flagAnioPrimeraVez = true;
+        for (Integer anios : pelicula.devolverAniosParticipacion()) {
+            if (!flagAnioPrimeraVez) {
+                System.out.print(", ");
+            }
+            System.out.print(anios);
+            flagAnioPrimeraVez = false;
+        }
+        System.out.println();
+    }
+
+    private void ImprimirActoresPelicula(Pelicula pelicula) {
+        System.out.println(i18n.get("msg.ficha.pelicula.actores"));
+        // boolean flagPrimerActor = true;
+        for (String[] datosActor : pelicula.devolverActoresParticipacion()) {
+            // if (!flagPrimerActor) {
+            //     System.out.print(", ");
+            // }
+            System.out.println(datosActor[0] + " - " + datosActor[1]);
+            // flagPrimerActor = false;
+        }
+        System.out.println();
+    }
+
+    private void ImprimirActoresporAnioParticipacion(Pelicula pelicula) {
+        System.out.println(i18n.get("msg.ficha.pelicula.actores"));
+        for (String[] datosParticipacion : pelicula.devolverParticipaciones()) {
+            System.out.println("Año: " + datosParticipacion[0]
+                    + " | Actor: " + datosParticipacion[1] + " - " + datosParticipacion[2]);
+        }
+    }
+
+    private void devolverPeliculasActor() {
+        String idActor = solicitarIdActor();
+        if (idActor == null) {
+            return;
         }
 
+        Actor actor = listaActores.buscarActorPorId(idActor);
+        if (actor == null || !actor.isActivo()) {
+            System.out.println(i18n.get("menu.opcion.actor.no.encontrado"));
+        } else {
+            for (Pelicula pelicula : listaActores.devolverPeliculasActor(actor.getIdActor())) {
+                System.out.println(pelicula.getNombrePelicula());
+            }
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package eda.practica1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ListaActores {
@@ -13,7 +14,8 @@ public class ListaActores {
     public void agregarActorPorId(Actor actor) {
         listaActores.put(actor.getIdActor(), actor);
     }
-     public void agregarActorPorNombre(Actor actor) {
+
+    public void agregarActorPorNombre(Actor actor) {
         listaActores.put(actor.getNombreActor(), actor);
     }
 
@@ -33,4 +35,14 @@ public class ListaActores {
         Actor actor = buscarActorPorId(idActor);
         return actor != null;
     }
+
+    public ArrayList<Pelicula> devolverPeliculasActor(String idActor) {
+        Actor actor = buscarActorPorId(idActor);
+
+        if (actor == null) {
+            return new ArrayList<>();
+        }
+        return actor.devolverPeliculas();
+    }
+
 }

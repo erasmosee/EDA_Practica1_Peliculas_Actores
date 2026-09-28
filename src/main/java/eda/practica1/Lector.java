@@ -111,7 +111,7 @@ public class Lector {
 
                             if ((pelicula.buscarParticipacion(idActor, anio) != null) || (actor.buscarParticipacion(idPelicula, anio) != null)) {
                                 System.out.println(i18n.get("msg.duplicado.relacion",
-                                        anio, idActor, nombreActor, idPelicula, nombrePelicula));
+                                    String.valueOf(anio), idActor, nombreActor, idPelicula, nombrePelicula));
                                 registrosDuplicados++;
                             } else {
 

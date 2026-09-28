@@ -1,5 +1,6 @@
 package eda.practica1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Actor {
@@ -49,6 +50,33 @@ public class Actor {
     public Participacion buscarParticipacion(String idPelicula, int anio) {
         String clave = idPelicula + "_" + anio;
         return participaciones.get(clave);
+    }
+
+    public void eliminarParticipacion(String idPelicula, int anio) {
+        String clave = idPelicula + "_" + anio;
+        participaciones.remove(clave);
+    }
+
+    public ArrayList<Pelicula> devolverPeliculas() {
+        ArrayList<Pelicula> peliculas = new ArrayList<>();
+
+        for (Participacion participacion : participaciones.values()) {
+            Pelicula peliculaParticipacion = participacion.getPelicula();
+            boolean yaEstaEnLaLista = false;
+
+            for (Pelicula pelicula : peliculas) {
+                if (pelicula.getIdPelicula().equals(peliculaParticipacion.getIdPelicula())) {
+                    yaEstaEnLaLista = true;
+                    break;
+                }
+            }
+
+            if (!yaEstaEnLaLista) {
+                peliculas.add(peliculaParticipacion);
+            }
+        }
+
+        return peliculas;
     }
 
 }
