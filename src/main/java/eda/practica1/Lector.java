@@ -4,7 +4,6 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -12,6 +11,7 @@ public class Lector {
 
     private final ListaActores listaActoresId;
     private final ListaPeliculas listaPeliculasId;
+
     private final Idioma i18n = Idioma.getInstance();
 
     //private int contador = 0;
@@ -26,6 +26,8 @@ public class Lector {
             File carpeta = new File(rutaCarpeta);
             File[] ficheros = carpeta.listFiles();
             int totalRegistros = 0;
+            int totalRegistrosEfectivos = 0;
+            int totalRegistrosDuplicados = 0;
 
             if (ficheros != null && ficheros.length > 0) {
                 int totalFicheros = ficheros.length;
@@ -39,8 +41,11 @@ public class Lector {
 
                 for (int i = 0; i < totalFicheros; i++) {
                     System.out.println(i18n.get("msg.info.fichero.analizando", ficheros[i].getName()));
-                    getMensajeRaruno(i % 20);
-                    totalRegistros += leerFichero(ficheros[i].getPath());
+                    getMensajeRaruno(i % (totalFicheros / 2));
+                    int[] registrosFichero = leerFichero(ficheros[i].getPath());
+                    totalRegistros += registrosFichero[0];
+                    totalRegistrosEfectivos += registrosFichero[1];
+                    totalRegistrosDuplicados += registrosFichero[2];
 
                     int almohadillasQueDeberiaHaber = ((i + 1) * totalAlmohadillas) / totalFicheros;
                     int almohadillasAPintar = almohadillasQueDeberiaHaber - almohadillasPintadas;
@@ -60,7 +65,8 @@ public class Lector {
                 Utils.finalizarbarracarga();
                 System.out.println();
             }
-            System.out.println(i18n.get("msg.info.registros.procesados", (totalRegistros)));
+            System.out.println(i18n.get("msg.info.registros.procesados",
+                    totalRegistros, totalRegistrosEfectivos, totalRegistrosDuplicados));
             retorno = true;
         } catch (Exception e) {
             System.out.println(i18n.get("msg.error.acceso.carpeta", (rutaCarpeta)));
@@ -68,8 +74,10 @@ public class Lector {
         return retorno;
     }
 
-    public int leerFichero(String elemento) {
-        int registros = 0;
+    public int[] leerFichero(String elemento) {
+        int registrosTotales = 0;
+        int registrosEfectivos = 0;
+        int registrosDuplicados = 0;
 
         //public void leerFichero(String elemento) {
         try {
@@ -78,7 +86,6 @@ public class Lector {
                 String linea;
                 while (entrada.hasNext()) {
                     linea = entrada.nextLine();
-                    registros++;
                     String[] datos = linea.split("\\s+###\\s+");
                     if (4 == datos.length) {
                         try {
@@ -86,25 +93,38 @@ public class Lector {
                             String nombrePelicula = datos[3].trim();
                             String idActor = extraerId(datos[0]);
                             String nombreActor = datos[1].trim();
+                            // Integer anioPelicula = Integer.valueOf(elemento.substring(elemento.length() - 8, elemento.length() - 4));
 
-                            Integer anioPelicula = Integer.valueOf(elemento.substring(elemento.length() - 8, elemento.length() - 4));
+                            Integer anio = Integer.valueOf(elemento.substring(elemento.length() - 8, elemento.length() - 4));
 
                             Actor actor = listaActoresId.buscarActorPorId(idActor);
                             if (actor == null) {
-                                actor = new Actor(idActor, nombreActor, new HashMap<>());
-                                listaActoresId.agregarActorPorId(actor);
+                                actor = new Actor(idActor, nombreActor);
+
                             }
 
                             Pelicula pelicula = listaPeliculasId.buscarPeliculaPorId(idPelicula);
                             if (pelicula == null) {
-                                pelicula = new Pelicula(idPelicula, nombrePelicula, anioPelicula, new HashMap<>());
-                                listaPeliculasId.agregarPeliculaPorId(pelicula);
+                                pelicula = new Pelicula(idPelicula, nombrePelicula);
+
                             }
 
-                            actor.agregarPelicula(pelicula);
-                            pelicula.agregarActor(actor);
-                            // contador++;
+                            if ((pelicula.buscarParticipacion(idActor, anio) != null) || (actor.buscarParticipacion(idPelicula, anio) != null)) {
+                                System.out.println(i18n.get("msg.duplicado.relacion",
+                                        anio, idActor, nombreActor, idPelicula, nombrePelicula));
+                                registrosDuplicados++;
+                            } else {
 
+                                listaPeliculasId.agregarPeliculaPorId(pelicula);
+                                listaActoresId.agregarActorPorId(actor);
+                                Participacion participacion = new Participacion(pelicula, actor, anio);
+                                actor.agregarParticipacion(participacion);
+                                pelicula.agregarParticipacion(participacion);
+                                registrosEfectivos++;
+                            }
+                            registrosTotales++;
+
+                            // contador++;
                             // if (contador % 25000 == 0) {
                             //     System.out.println("Líneas leídas: " + contador + "\t" + idActor + " ### " + nombreActor);
                             // }
@@ -119,7 +139,7 @@ public class Lector {
         } catch (Exception e) {
             System.err.println(i18n.get("msg.error.procesando.fichero", elemento));
         }
-        return registros;
+        return new int[]{registrosTotales, registrosEfectivos, registrosDuplicados};
 
     }
 

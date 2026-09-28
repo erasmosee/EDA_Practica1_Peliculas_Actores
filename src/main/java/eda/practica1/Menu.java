@@ -1,6 +1,5 @@
 package eda.practica1;
 
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class Menu {
@@ -34,7 +33,6 @@ public class Menu {
                 System.out.println(i18n.get("menu.opcion.3.insertar.actor"));
                 System.out.println(i18n.get("menu.opcion.4.peliculas.actor"));
                 System.out.println(i18n.get("menu.opcion.5.actores.peliculas"));
-                System.out.println(i18n.get("menu.opcion.6.modificar.anio"));
                 System.out.println(i18n.get("menu.opcion.7.borrar.actor"));
                 System.out.println(i18n.get("menu.opcion.8.guardar.fichero"));
                 System.out.println(i18n.get("menu.opcion.9.actores.nomApe"));
@@ -67,8 +65,6 @@ public class Menu {
                 buscarActor();
             case 3 ->
                 insertarActor();
-            case 6 ->
-                modificarAnioPelicula();
             case 7 ->
                 mostrarMenuBorrado();
             case 10 ->
@@ -92,6 +88,10 @@ public class Menu {
                 Utils.barracarga();
             case 4 ->
                 consultarFichaPelicula();
+            case 5 ->
+                Utils.revisarNombresDuplicados(listaPeliculas);
+            case 6 ->
+                Utils.revisarNombresDuplicados(listaActores);
             case 0 ->
                 System.out.println(i18n.get("menu.opcion.10.utilidades.volver"));
             default ->
@@ -163,12 +163,19 @@ public class Menu {
             return;
         }
 
+        int anio = solicitarAnioParticipacion();
+        if (anio == -1) {
+            return;
+        }
+
         String idActor = Utils.generarIdActor(listaActores);
-        Actor nuevoActor = new Actor(idActor, nombreActor, new HashMap<>());
-        nuevoActor.agregarPelicula(pelicula);
-        pelicula.agregarActor(nuevoActor);
+        Actor nuevoActor = new Actor(idActor, nombreActor);
+        Participacion participacion = new Participacion(pelicula, nuevoActor, anio);
+        nuevoActor.agregarParticipacion(participacion);
+        pelicula.agregarParticipacion(participacion);
         listaActores.agregarActorPorId(nuevoActor);
-        System.out.println(i18n.get("msg.actor.insertado.pelicula", nombreActor, idActor, pelicula.getNombrePelicula()));
+        System.out.println(i18n.get("msg.actor.insertado.pelicula",
+                nombreActor, idActor, pelicula.getNombrePelicula(), anio));
     }
 
     private void procesarBorradoActor(int codigoBorrado) {
@@ -225,6 +232,8 @@ public class Menu {
             System.out.println(i18n.get("menu.opcion.10.2.id.aleatorio"));
             System.out.println(i18n.get("menu.opcion.10.3.barra.carga"));
             System.out.println(i18n.get("menu.opcion.10.4.ficha.pelicula"));
+            System.out.println(i18n.get("menu.opcion.10.5.revisar.peliculas"));
+            System.out.println(i18n.get("menu.opcion.10.6.revisar.actores"));
             System.out.println(i18n.get("menu.opcion.0.atras"));
             System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
 
@@ -270,14 +279,14 @@ public class Menu {
         return idPelicula;
     }
 
-    private int solicitarAnioPelicula(int viejoAnioPelicula) {
+    private int solicitarAnioParticipacion() {
         System.out.print(i18n.get("menu.opcion.input.anio"));
-        int nuevoAnioPelicula = Integer.parseInt(sc.nextLine().trim());
-        if (!Utils.validarAnio(nuevoAnioPelicula)) {
+        int anio = Integer.parseInt(sc.nextLine().trim());
+        if (!Utils.validarAnio(anio)) {
             System.out.println(i18n.get("msg.opcion.validar.anio"));
-            return viejoAnioPelicula;
+            return -1;
         }
-        return nuevoAnioPelicula;
+        return anio;
     }
 
     public void consultarFichaPelicula() {
@@ -289,33 +298,8 @@ public class Menu {
         } else {
             System.out.println(i18n.get("msg.ficha.pelicula", pelicula.getIdPelicula()));
             System.out.println(i18n.get("msg.ficha.pelicula.nombre", pelicula.getNombrePelicula()));
-            System.out.println(i18n.get("msg.ficha.pelicula.anio", pelicula.getAnioPelicula()));
         }
 
-    }
-
-    public void modificarAnioPelicula() {
-
-        //     System.out.print(i18n.get("menu.opcion.input.pelicula"));
-        //     String idPelicula = sc.nextLine().trim();
-        //     if (!Utils.validarIdNumerico(idPelicula_old)) {
-        //         System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
-        //         return;
-        //     }
-        String idPelicula = solicitarIdPelicula();
-        Pelicula pelicula = listaPeliculas.buscarPeliculaPorId(idPelicula);
-
-        if (pelicula == null) {
-            System.out.println(i18n.get("menu.opcion.6.pelicula.no.encontrada"));
-        } else {
-
-            int nuevoAnioPelicula = solicitarAnioPelicula(pelicula.getAnioPelicula());
-            modificarAnioPelicula(idPelicula, nuevoAnioPelicula);
-        }
-    }
-
-    public void modificarAnioPelicula(String idPelicula, int nuevoAnioPelicula) {
-        listaPeliculas.buscarPeliculaPorId(idPelicula).setAnioPelicula(nuevoAnioPelicula);
     }
 
 }

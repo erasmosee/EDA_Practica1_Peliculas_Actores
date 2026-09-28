@@ -1,7 +1,10 @@
 package eda.practica1;
 
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Utils {
@@ -53,11 +56,55 @@ public class Utils {
     }
 
     public static boolean validarAnio(int anio) {
-        return anio > 1984 && anio <= Year.now().getValue();
+        return anio >= 1970 && anio <= Year.now().getValue();
     }
 
     public static boolean validarNombre(String nombre) {
         return nombre.matches("^.{4,}$");
+    }
+
+    public static void revisarNombresDuplicados(ListaActores listaActores) {
+        HashMap<String, String> nombresEIds = new HashMap<>();
+
+        for (Actor actor : listaActores.getListaActores().values()) {
+            nombresEIds.put(actor.getIdActor(), actor.getNombreActor());
+        }
+
+        revisarNombresDuplicados(nombresEIds, "actores");
+    }
+
+    public static void revisarNombresDuplicados(ListaPeliculas listaPeliculas) {
+        HashMap<String, String> nombresEIds = new HashMap<>();
+
+        for (Pelicula pelicula : listaPeliculas.getListaPeliculas().values()) {
+            nombresEIds.put(pelicula.getIdPelicula(), pelicula.getNombrePelicula());
+        }
+
+        revisarNombresDuplicados(nombresEIds, "películas");
+    }
+
+    private static void revisarNombresDuplicados(HashMap<String, String> nombresEIds, String tipo) {
+        List<String> ids = new ArrayList<>(nombresEIds.keySet());
+        boolean hayDuplicados = false;
+
+        for (int i = 0; i < ids.size(); i++) {
+            for (int j = i + 1; j < ids.size(); j++) {
+                String id1 = ids.get(i);
+                String id2 = ids.get(j);
+                String nombre1 = nombresEIds.get(id1).trim();
+                String nombre2 = nombresEIds.get(id2).trim();
+
+                if (nombre1.equalsIgnoreCase(nombre2)) {
+                    System.out.println("Nombre duplicado en " + tipo + ": " + nombre1
+                            + " (IDs " + id1 + " y " + id2 + ")");
+                    hayDuplicados = true;
+                }
+            }
+        }
+
+        if (!hayDuplicados) {
+            System.out.println("No hay nombres duplicados en " + tipo + ".");
+        }
     }
 
     public static String generarIdActor(ListaActores listaActores) {
