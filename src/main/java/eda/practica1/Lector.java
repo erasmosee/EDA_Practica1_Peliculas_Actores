@@ -19,8 +19,8 @@ public class Lector {
         this.listaPeliculasId = listaPeliculas;
     }
 
-    public void leerCarpeta(String rutaCarpeta) {
-
+    public boolean leerCarpeta(String rutaCarpeta) {
+        boolean retorno = false;
         try {
             File carpeta = new File(rutaCarpeta);
             File[] ficheros = carpeta.listFiles();
@@ -60,11 +60,11 @@ public class Lector {
                 System.out.println();
             }
             System.out.println(i18n.get("msg.info.registros.procesados", (totalRegistros)));
-
+            retorno = true;
         } catch (Exception e) {
             System.out.println(i18n.get("msg.error.acceso.carpeta", (rutaCarpeta)));
         }
-
+        return retorno;
     }
 
     public int leerFichero(String elemento) {

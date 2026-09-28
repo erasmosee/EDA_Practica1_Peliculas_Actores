@@ -1,5 +1,6 @@
 package eda.practica1;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Menu {
@@ -63,12 +64,12 @@ public class Menu {
             case 1 ->
                 cargarDatos();
             case 2 ->
-                listaActores.buscarActorID();
+                buscarActor();
             case 3 ->
-                listaActores.insertarActorID(listaPeliculas);
+                insertarActor();
             case 6 ->
                 listaPeliculas.modificarAnioPelicula();
-                case 7 ->
+            case 7 ->
                 mostrarMenuBorrado();
             case 10 ->
                 mostrarMenuUtilidades();
@@ -103,17 +104,100 @@ public class Menu {
 
         switch (opcion) {
             case 1 ->
-                listaActores.borrarActor(0);
+                procesarBorradoActor(0);
             case 2 ->
-                listaActores.borrarActor(1);
-            case 3->
-                listaActores.borrarActor(2);
+                procesarBorradoActor(1);
+            case 3 ->
+                procesarBorradoActor(2);
             case 0 ->
                 System.out.println(i18n.get("menu.opcion.10.utilidades.volver"));
             default ->
                 System.out.println(i18n.get("msg.opcion.invalida"));
         }
 
+    }
+
+    private String solicitarIdActor() {
+        System.out.print(i18n.get("menu.opcion.input.actor"));
+        String idActor = sc.nextLine().trim();
+        if (!Utils.validarIdNumerico(idActor)) {
+            System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
+            return null;
+        }
+        return idActor;
+    }
+
+    private void buscarActor() {
+        String idActor = solicitarIdActor();
+        if (idActor == null) {
+            return;
+        }
+
+        Actor actor = listaActores.buscarActorPorId(idActor);
+        if (actor == null || !actor.isActivo()) {
+            System.out.println(i18n.get("menu.opcion.actor.no.encontrado"));
+        } else {
+            System.out.println(i18n.get("menu.opcion.actor.encontrado") + actor.getIdActor()
+                    + " - " + actor.getNombreActor());
+        }
+    }
+
+    private void insertarActor() {
+        System.out.print(i18n.get("menu.opcion.input.nombre"));
+        String nombreActor = sc.nextLine().trim();
+        if (!Utils.validarNombre(nombreActor)) {
+            System.out.println(i18n.get("msg.opcion.validar.nombre"));
+            return;
+        }
+
+        System.out.print(i18n.get("menu.opcion.input.pelicula"));
+        String idPelicula = sc.nextLine().trim();
+        if (!Utils.validarIdNumerico(idPelicula)) {
+            System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
+            return;
+        }
+
+        Pelicula pelicula = listaPeliculas.buscarPeliculaPorId(idPelicula);
+        if (pelicula == null) {
+            System.out.println(i18n.get("menu.opcion.6.pelicula.no.encontrada"));
+            return;
+        }
+
+        String idActor = Utils.generarIdActor(listaActores);
+        Actor nuevoActor = new Actor(idActor, nombreActor, new HashMap<>());
+        nuevoActor.agregarPelicula(pelicula);
+        pelicula.agregarActor(nuevoActor);
+        listaActores.agregarActorPorId(nuevoActor);
+        System.out.println(i18n.get("msg.actor.insertado.pelicula", nombreActor, idActor, pelicula.getNombrePelicula()));
+    }
+
+    private void procesarBorradoActor(int codigoBorrado) {
+        String idActor = solicitarIdActor();
+        if (idActor == null) {
+            return;
+        }
+
+        Actor actor = listaActores.buscarActorPorId(idActor);
+        if (actor == null) {
+            System.out.println(i18n.get("menu.opcion.actor.no.encontrado"));
+            return;
+        }
+
+        switch (codigoBorrado) {
+            case 0 -> {
+                actor.setActivo(false);
+                System.out.println(i18n.get("msg.baja.logica.efectuada", actor.getNombreActor(), actor.getIdActor()));
+            }
+            case 1 -> {
+                listaActores.eliminarActorPorId(actor.getIdActor());
+                System.out.println(i18n.get("msg.baja.definitiva.efectuada", actor.getNombreActor(), actor.getIdActor()));
+            }
+            case 2 -> {
+                actor.setActivo(true);
+                System.out.println(i18n.get("msg.recuperacion.logica.restaurada", actor.getNombreActor(), actor.getIdActor()));
+            }
+            default -> System.out.println(i18n.get("msg.opcion.invalida"));
+        }
     }
 
     private void cargarDatos() {
@@ -125,9 +209,10 @@ public class Menu {
         if (ruta.isEmpty()) {
             ruta = rutaDefecto;
         }
+        if (lector.leerCarpeta(ruta)) {
+            datosCargados = true;
+        }
 
-        lector.leerCarpeta(ruta);
-        this.datosCargados = true;
     }
 
     private void mostrarMenuUtilidades() {
