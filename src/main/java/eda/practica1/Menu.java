@@ -68,7 +68,7 @@ public class Menu {
             case 3 ->
                 insertarActor();
             case 6 ->
-                listaPeliculas.modificarAnioPelicula();
+                modificarAnioPelicula();
             case 7 ->
                 mostrarMenuBorrado();
             case 10 ->
@@ -91,7 +91,7 @@ public class Menu {
             case 3 ->
                 Utils.barracarga();
             case 4 ->
-                listaPeliculas.consultarFichaPelicula();
+                consultarFichaPelicula();
             case 0 ->
                 System.out.println(i18n.get("menu.opcion.10.utilidades.volver"));
             default ->
@@ -256,6 +256,65 @@ public class Menu {
             }
 
         }
+    }
+
+    private String solicitarIdPelicula() {
+
+        System.out.print(i18n.get("menu.opcion.input.pelicula"));
+        String idPelicula = sc.nextLine().trim();
+        if (!Utils.validarIdNumerico(idPelicula)) {
+            System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
+            return null;
+        }
+        return idPelicula;
+    }
+
+    private int solicitarAnioPelicula(int viejoAnioPelicula) {
+        System.out.print(i18n.get("menu.opcion.input.anio"));
+        int nuevoAnioPelicula = Integer.parseInt(sc.nextLine().trim());
+        if (!Utils.validarAnio(nuevoAnioPelicula)) {
+            System.out.println(i18n.get("msg.opcion.validar.anio"));
+            return viejoAnioPelicula;
+        }
+        return nuevoAnioPelicula;
+    }
+
+    public void consultarFichaPelicula() {
+        String idPelicula = solicitarIdPelicula();
+        Pelicula pelicula = listaPeliculas.buscarPeliculaPorId(idPelicula);
+
+        if (pelicula == null) {
+            System.out.println(i18n.get("menu.opcion.6.pelicula.no.encontrada"));
+        } else {
+            System.out.println(i18n.get("msg.ficha.pelicula", pelicula.getIdPelicula()));
+            System.out.println(i18n.get("msg.ficha.pelicula.nombre", pelicula.getNombrePelicula()));
+            System.out.println(i18n.get("msg.ficha.pelicula.anio", pelicula.getAnioPelicula()));
+        }
+
+    }
+
+    public void modificarAnioPelicula() {
+
+        //     System.out.print(i18n.get("menu.opcion.input.pelicula"));
+        //     String idPelicula = sc.nextLine().trim();
+        //     if (!Utils.validarIdNumerico(idPelicula_old)) {
+        //         System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
+        //         return;
+        //     }
+        String idPelicula = solicitarIdPelicula();
+        Pelicula pelicula = listaPeliculas.buscarPeliculaPorId(idPelicula);
+
+        if (pelicula == null) {
+            System.out.println(i18n.get("menu.opcion.6.pelicula.no.encontrada"));
+        } else {
+
+            int nuevoAnioPelicula = solicitarAnioPelicula(pelicula.getAnioPelicula());
+            modificarAnioPelicula(idPelicula, nuevoAnioPelicula);
+        }
+    }
+
+    public void modificarAnioPelicula(String idPelicula, int nuevoAnioPelicula) {
+        listaPeliculas.buscarPeliculaPorId(idPelicula).setAnioPelicula(nuevoAnioPelicula);
     }
 
 }
