@@ -11,7 +11,6 @@ public class Menu {
     private boolean datosCargados;
     private final Idioma i18n = Idioma.getInstance();
 
-
     public Menu(Lector lector, ListaActores listaActores, ListaPeliculas listaPeliculas) {
         this.sc = new Scanner(System.in);
         this.lector = lector;
@@ -67,6 +66,8 @@ public class Menu {
                 listaActores.buscarActorID();
             case 3 ->
                 listaActores.insertarActorID();
+            case 6 ->
+                listaPeliculas.modificarAnioPelicula();
             case 10 ->
                 mostrarMenuUtilidades();
             case 0 ->
@@ -110,8 +111,10 @@ public class Menu {
                         Utils.mostrarLetrasRaras(listaActores, listaPeliculas);
                     case 2 ->
                         Utils.generarIdActor(listaActores);
-                    case 3 -> 
+                    case 3 ->
                         Utils.barracarga();
+                    case 6 ->
+                        ListaPeliculas.consultarFichaPelicula();
                     case 0 ->
                         System.out.println(i18n.get("menu.opcion.10.utilidades.volver"));
                     default ->

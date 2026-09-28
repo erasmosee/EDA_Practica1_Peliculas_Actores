@@ -1,5 +1,6 @@
 package eda.practica1;
 
+import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,6 +51,9 @@ public class Utils {
     public static boolean validarIdNumerico(String id) {
         return id.matches("\\d+");
     }
+    public static boolean validarAnio(int anio) {
+        return anio > 1984 && anio <= Year.now().getValue();
+    }
 
     public static boolean validarNombre(String nombre) {
         return nombre.matches("^.{4,}$");
@@ -65,30 +69,26 @@ public class Utils {
     }
 
     public static void barracarga() {
-        int numElementos = 8;
-        int numAlmohadillas = 80;
+        int numElementos = 13;
+        int numAlmohadillas = 100;
 
         barracarga(numElementos, numAlmohadillas);
     }
 
     private static void barracarga(int numElementos, int numAlmohadillas) {
         iniciarbarracarga();
+        int almohadillasPintadas = 0;
 
-        int x = 0;
-        while (x < numElementos) {
-            int y = 0;
-            while (y < numAlmohadillas / numElementos) {
+        for (int i = 0; i < numElementos; i++) {
+
+            int almohadillasQueDeberiaHaber = ((i + 1) * numAlmohadillas) / numElementos;
+            int almohadillasAPintar = almohadillasQueDeberiaHaber - almohadillasPintadas;
+            for (int j = 0; j < almohadillasAPintar; j++) {
                 avanzarbarracarga();
-                y++;
+            //    Thread.sleep(100);
             }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            x++;
+            almohadillasPintadas = almohadillasQueDeberiaHaber;
         }
-
         finalizarbarracarga();
     }
 

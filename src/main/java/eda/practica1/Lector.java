@@ -9,14 +9,14 @@ import java.util.Scanner;
 
 public class Lector {
 
-    private final ListaActores listaActores;
-    private final ListaPeliculas listaPeliculas;
+    private final ListaActores listaActoresId;
+    private final ListaPeliculas listaPeliculasId;
     private final Idioma i18n = Idioma.getInstance();
 
     //private int contador = 0;
     public Lector(ListaActores listaActores, ListaPeliculas listaPeliculas) {
-        this.listaActores = listaActores;
-        this.listaPeliculas = listaPeliculas;
+        this.listaActoresId = listaActores;
+        this.listaPeliculasId = listaPeliculas;
     }
 
     public void leerCarpeta(String rutaCarpeta) {
@@ -31,7 +31,7 @@ public class Lector {
                 int totalAlmohadillas = 100;
                 int almohadillasPintadas = 0;
 
-                 System.out.println(i18n.get("msg.info.procesar.ficheros", (totalFicheros)));
+                System.out.println(i18n.get("msg.info.procesar.ficheros", (totalFicheros)));
 
                 Utils.iniciarbarracarga();
 
@@ -49,7 +49,7 @@ public class Lector {
             }
 
         } catch (Exception e) {
-            System.out.println("Error al acceder a la carpeta");
+            System.out.println(i18n.get("msg.error.acceso.carpeta", (rutaCarpeta)));
         }
 
     }
@@ -74,16 +74,16 @@ public class Lector {
 
                             Integer anioPelicula = Integer.valueOf(elemento.substring(elemento.length() - 8, elemento.length() - 4));
 
-                            Actor actor = listaActores.buscar(idActor);
+                            Actor actor = listaActoresId.buscar(idActor);
                             if (actor == null) {
                                 actor = new Actor(idActor, nombreActor);
-                                listaActores.agregar(actor);
+                                listaActoresId.agregar(actor);
                             }
 
-                            Pelicula pelicula = listaPeliculas.buscar(idPelicula);
+                            Pelicula pelicula = listaPeliculasId.buscarPeliculaPorId(idPelicula);
                             if (pelicula == null) {
                                 pelicula = new Pelicula(idPelicula, nombrePelicula, anioPelicula, new HashMap<>());
-                                listaPeliculas.agregar(pelicula);
+                                listaPeliculasId.agregarPeliculaPorId(pelicula);
                             }
 
                             pelicula.agregarActor(actor);

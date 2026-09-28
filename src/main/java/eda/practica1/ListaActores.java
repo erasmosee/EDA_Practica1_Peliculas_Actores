@@ -29,11 +29,7 @@ public class ListaActores {
 
     public boolean  existe(String idActor) {
         Actor actor = buscar(idActor);
-        if (actor != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return actor != null;
     }
 
     public void buscarActorID() {
@@ -62,7 +58,7 @@ public class ListaActores {
             System.out.println(i18n.get("msg.opcion.validar.nombre"));
             return;
         }
-        System.out.println(i18n.get("menu.opcion.3.input.pelicula"));
+        System.out.println(i18n.get("menu.opcion.input.pelicula"));
         String idPelicula = sc.nextLine().trim();
 
         if (!Utils.validarIdNumerico(idPelicula)) {
