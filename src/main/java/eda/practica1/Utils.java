@@ -2,7 +2,6 @@ package eda.practica1;
 
 import java.time.Year;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 public class Utils {
@@ -104,28 +103,6 @@ public class Utils {
 
     public static void finalizarbarracarga() {
         System.out.println("]");
-    }
-
-    private static final String[] MENSAJES_RAROS = {
-        "Alimentando a los actores...",
-        "Convenciendo al director de no cambiar el guion...",
-        "Rebobinando las cintas VHS...",
-        "Buscando los palomitas perdidas...",
-        "Llamando al doble de acción...",
-        "Añadiendo efectos especiales de bajo presupuesto...",
-        "Negociando el caché de la estrella...",
-        "Limpiando la alfombra roja..."
-    };
-
-    private static final Random RANDOM = new Random();
-
-    public static void getMensajeRaruno(int validador) {
-        if (validador == 0) {
-            int index = RANDOM.nextInt(MENSAJES_RAROS.length);
-            ansiIrPosicion(1);
-            ansiBorrarFila(2);
-            System.out.print(MENSAJES_RAROS[index]);
-        }
     }
 
     public static void ansiSubirFilas(int filas) {
