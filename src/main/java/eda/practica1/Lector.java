@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Lector {
@@ -38,7 +39,7 @@ public class Lector {
 
                 for (int i = 0; i < totalFicheros; i++) {
                     System.out.println(i18n.get("msg.info.fichero.analizando", ficheros[i].getName()));
-                    Utils.getMensajeRaruno(i % 20);
+                    getMensajeRaruno(i % 20);
                     totalRegistros += leerFichero(ficheros[i].getPath());
 
                     int almohadillasQueDeberiaHaber = ((i + 1) * totalAlmohadillas) / totalFicheros;
@@ -128,6 +129,29 @@ public class Lector {
             return String.valueOf(texto.substring(pos + 9).trim());
         }
         return String.valueOf(texto.trim());
+    }
+
+    
+    private static final String[] MENSAJES_RAROS = {
+        "Alimentando a los actores...",
+        "Convenciendo al director de no cambiar el guion...",
+        "Rebobinando las cintas VHS...",
+        "Buscando los palomitas perdidas...",
+        "Llamando al doble de acción...",
+        "Añadiendo efectos especiales de bajo presupuesto...",
+        "Negociando el caché de la estrella...",
+        "Limpiando la alfombra roja..."
+    };
+
+    private static final Random RANDOM = new Random();
+
+    public static void getMensajeRaruno(int validador) {
+        if (validador == 0) {
+            int index = RANDOM.nextInt(MENSAJES_RAROS.length);
+            Utils.ansiIrPosicion(1);
+            Utils.ansiBorrarFila(2);
+            System.out.print(MENSAJES_RAROS[index]);
+        }
     }
 
 }
