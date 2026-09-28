@@ -24,9 +24,9 @@ public class Lector {
         try {
             File carpeta = new File(rutaCarpeta);
             File[] ficheros = carpeta.listFiles();
+            int totalRegistros = 0;
 
             if (ficheros != null && ficheros.length > 0) {
-
                 int totalFicheros = ficheros.length;
                 int totalAlmohadillas = 100;
                 int almohadillasPintadas = 0;
@@ -34,19 +34,32 @@ public class Lector {
                 System.out.println(i18n.get("msg.info.procesar.ficheros", (totalFicheros)));
 
                 Utils.iniciarbarracarga();
+                System.out.println();
 
                 for (int i = 0; i < totalFicheros; i++) {
-                    leerFichero(ficheros[i].getPath());
+                    System.out.println(i18n.get("msg.info.fichero.analizando", ficheros[i].getName()));
+                    Utils.getMensajeRaruno(i % 20);
+                    totalRegistros += leerFichero(ficheros[i].getPath());
 
                     int almohadillasQueDeberiaHaber = ((i + 1) * totalAlmohadillas) / totalFicheros;
                     int almohadillasAPintar = almohadillasQueDeberiaHaber - almohadillasPintadas;
+                    int columnaSiguiente = 10 + almohadillasPintadas;
+                    Utils.ansiSubirFilas(2);
+                    Utils.ansiIrPosicion(columnaSiguiente);
                     for (int j = 0; j < almohadillasAPintar; j++) {
                         Utils.avanzarbarracarga();
                     }
                     almohadillasPintadas = almohadillasQueDeberiaHaber;
+                    Utils.ansiBajarFilas(1);
+                    Utils.ansiIrPosicion(1);
+                    Utils.ansiBorrarFila(2);
                 }
+                Utils.ansiSubirFilas(1);
+                Utils.ansiIrPosicion(110);
                 Utils.finalizarbarracarga();
+                System.out.println();
             }
+            System.out.println(i18n.get("msg.info.registros.procesados", (totalRegistros)));
 
         } catch (Exception e) {
             System.out.println(i18n.get("msg.error.acceso.carpeta", (rutaCarpeta)));
@@ -54,16 +67,17 @@ public class Lector {
 
     }
 
-    public void leerFichero(String elemento) {
+    public int leerFichero(String elemento) {
+        int registros = 0;
 
+        //public void leerFichero(String elemento) {
         try {
 
             try (Scanner entrada = new Scanner(Files.newInputStream(Paths.get(elemento)), StandardCharsets.UTF_8)) {
                 String linea;
-
                 while (entrada.hasNext()) {
                     linea = entrada.nextLine();
-
+                    registros++;
                     String[] datos = linea.split("\\s+###\\s+");
                     if (4 == datos.length) {
                         try {
@@ -74,10 +88,10 @@ public class Lector {
 
                             Integer anioPelicula = Integer.valueOf(elemento.substring(elemento.length() - 8, elemento.length() - 4));
 
-                            Actor actor = listaActoresId.buscar(idActor);
+                            Actor actor = listaActoresId.buscarActorPorId(idActor);
                             if (actor == null) {
-                                actor = new Actor(idActor, nombreActor);
-                                listaActoresId.agregar(actor);
+                                actor = new Actor(idActor, nombreActor, new HashMap<>());
+                                listaActoresId.agregarActorPorId(actor);
                             }
 
                             Pelicula pelicula = listaPeliculasId.buscarPeliculaPorId(idPelicula);
@@ -86,6 +100,7 @@ public class Lector {
                                 listaPeliculasId.agregarPeliculaPorId(pelicula);
                             }
 
+                            actor.agregarPelicula(pelicula);
                             pelicula.agregarActor(actor);
                             // contador++;
 
@@ -97,11 +112,14 @@ public class Lector {
                         }
                     }
                 }
+
             }
 
         } catch (Exception e) {
             System.err.println(i18n.get("msg.error.procesando.fichero", elemento));
         }
+        return registros;
+
     }
 
     private String extraerId(String texto) {

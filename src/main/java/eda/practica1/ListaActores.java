@@ -14,11 +14,14 @@ public class ListaActores {
         listaActores = new HashMap<>();
     }
 
-    public void agregar(Actor Actor) {
-        listaActores.put(Actor.getIdActor(), Actor);
+    public void agregarActorPorId(Actor actor) {
+        listaActores.put(actor.getIdActor(), actor);
+    }
+     public void agregarActorPorNombre(Actor actor) {
+        listaActores.put(actor.getNombreActor(), actor);
     }
 
-    public Actor buscar(String idActor) {
+    public Actor buscarActorPorId(String idActor) {
         return listaActores.get(idActor);
     }
 
@@ -27,7 +30,7 @@ public class ListaActores {
     }
 
     public boolean existe(String idActor) {
-        Actor actor = buscar(idActor);
+        Actor actor = buscarActorPorId(idActor);
         return actor != null;
     }
 
@@ -70,7 +73,7 @@ public class ListaActores {
             return;
         }
 
-        Actor actor = buscar(idActorBusqueda);
+        Actor actor = buscarActorPorId(idActorBusqueda);
 
         if (actor == null || !actor.isActivo()) {
             System.out.println(i18n.get("menu.opcion.actor.no.encontrado"));
@@ -98,8 +101,8 @@ public class ListaActores {
         }
 
         String idActorBusqueda = Utils.generarIdActor(this);
-        Actor nuevoActor = new Actor(idActorBusqueda, nombreActor);
-        agregar(nuevoActor);
+        Actor nuevoActor = new Actor(idActorBusqueda, nombreActor, new HashMap<>());
+        agregarActorPorId(nuevoActor);
         pelicula.agregarActor(nuevoActor);
         System.err.println(i18n.get("msg.actor.insertado.pelicula", nuevoActor.getNombreActor(), nuevoActor.getIdActor(), pelicula.getNombrePelicula()));
     }
@@ -111,7 +114,7 @@ public class ListaActores {
         if (idActorBusqueda == null) {
             return;
         }
-        Actor actor = buscar(idActorBusqueda);
+        Actor actor = buscarActorPorId(idActorBusqueda);
 
         if (actor == null) {
             System.out.println(i18n.get("menu.opcion.actor.no.encontrado"));

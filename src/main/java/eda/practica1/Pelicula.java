@@ -7,24 +7,24 @@ public class Pelicula {
     String idPelicula;
     String nombrePelicula;
     int anioPelicula;
-    private final HashMap<String, Actor> listaActores;
     boolean activo;
+    private final HashMap<String, Actor> listaActoresDeLaPelicula;
 
     public Pelicula(String idPelicula, String nombrePelicula, int anioPelicula, HashMap<String, Actor> listaActores) {
 
         this.idPelicula = idPelicula;
         this.nombrePelicula = nombrePelicula;
         this.anioPelicula = anioPelicula;
-        this.listaActores = listaActores;
+        this.listaActoresDeLaPelicula = listaActores;
         this.activo = true;
     }
 
     public void agregarActor(Actor actor) {
-        listaActores.put(actor.getIdActor(), actor);
+        listaActoresDeLaPelicula.put(actor.getIdActor(), actor);
     }
 
     public Actor buscarActor(String idActor) {
-        return listaActores.get(idActor);
+        return listaActoresDeLaPelicula.get(idActor);
     }
 
     public String getIdPelicula() {
@@ -58,4 +58,5 @@ public class Pelicula {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
+
 }

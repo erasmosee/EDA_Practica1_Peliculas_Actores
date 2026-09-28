@@ -2,6 +2,7 @@ package eda.practica1;
 
 import java.time.Year;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class Utils {
@@ -51,6 +52,7 @@ public class Utils {
     public static boolean validarIdNumerico(String id) {
         return id.matches("\\d+");
     }
+
     public static boolean validarAnio(int anio) {
         return anio > 1984 && anio <= Year.now().getValue();
     }
@@ -85,7 +87,7 @@ public class Utils {
             int almohadillasAPintar = almohadillasQueDeberiaHaber - almohadillasPintadas;
             for (int j = 0; j < almohadillasAPintar; j++) {
                 avanzarbarracarga();
-            //    Thread.sleep(100);
+                //    Thread.sleep(100);
             }
             almohadillasPintadas = almohadillasQueDeberiaHaber;
         }
@@ -104,4 +106,41 @@ public class Utils {
         System.out.println("]");
     }
 
+    private static final String[] MENSAJES_RAROS = {
+        "Alimentando a los actores...",
+        "Convenciendo al director de no cambiar el guion...",
+        "Rebobinando las cintas VHS...",
+        "Buscando los palomitas perdidas...",
+        "Llamando al doble de acción...",
+        "Añadiendo efectos especiales de bajo presupuesto...",
+        "Negociando el caché de la estrella...",
+        "Limpiando la alfombra roja..."
+    };
+
+    private static final Random RANDOM = new Random();
+
+    public static void getMensajeRaruno(int validador) {
+        if (validador == 0) {
+            int index = RANDOM.nextInt(MENSAJES_RAROS.length);
+            ansiIrPosicion(1);
+            ansiBorrarFila(2);
+            System.out.print(MENSAJES_RAROS[index]);
+        }
+    }
+
+    public static void ansiSubirFilas(int filas) {
+        System.out.print("\033[" + filas + "A");
+    }
+
+    public static void ansiBajarFilas(int filas) {
+        System.out.print("\033[" + filas + "B");
+    }
+
+    public static void ansiIrPosicion(int posicion) {
+        System.out.print("\033[" + posicion + "G");
+    }
+
+    public static void ansiBorrarFila(int modoBorrado) {
+        System.out.print("\033[" + modoBorrado + "K");
+    }
 }
