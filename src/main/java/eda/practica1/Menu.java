@@ -65,9 +65,11 @@ public class Menu {
             case 2 ->
                 listaActores.buscarActorID();
             case 3 ->
-                listaActores.insertarActorID();
+                listaActores.insertarActorID(listaPeliculas);
             case 6 ->
                 listaPeliculas.modificarAnioPelicula();
+                case 7 ->
+                mostrarMenuBorrado();
             case 10 ->
                 mostrarMenuUtilidades();
             case 0 ->
@@ -89,6 +91,23 @@ public class Menu {
                 Utils.barracarga();
             case 4 ->
                 listaPeliculas.consultarFichaPelicula();
+            case 0 ->
+                System.out.println(i18n.get("menu.opcion.10.utilidades.volver"));
+            default ->
+                System.out.println(i18n.get("msg.opcion.invalida"));
+        }
+
+    }
+
+    private void procesarOpcionBorrado(int opcion) {
+
+        switch (opcion) {
+            case 1 ->
+                listaActores.borrarActor(0);
+            case 2 ->
+                listaActores.borrarActor(1);
+            case 3->
+                listaActores.borrarActor(2);
             case 0 ->
                 System.out.println(i18n.get("menu.opcion.10.utilidades.volver"));
             default ->
@@ -126,6 +145,27 @@ public class Menu {
             try {
                 opcion = Integer.parseInt(sc.nextLine());
                 procesarOpcionUtilidades(opcion);
+            } catch (NumberFormatException e) {
+                System.out.println(i18n.get("msg.opcion.invalida"));
+            }
+
+        }
+    }
+
+    private void mostrarMenuBorrado() {
+        int opcion = -1;
+
+        while (opcion != 0) {
+            System.out.println("\n" + i18n.get("menu.texto.borrado"));
+            System.out.println(i18n.get("menu.opcion.7.borrado.logico"));
+            System.out.println(i18n.get("menu.opcion.7.borrado.definitivo"));
+            System.out.println(i18n.get("menu.opcion.7.recuperacion.logica"));
+            System.out.println(i18n.get("menu.opcion.0.atras"));
+            System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
+
+            try {
+                opcion = Integer.parseInt(sc.nextLine());
+                procesarOpcionBorrado(opcion);
             } catch (NumberFormatException e) {
                 System.out.println(i18n.get("msg.opcion.invalida"));
             }

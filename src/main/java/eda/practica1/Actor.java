@@ -4,11 +4,13 @@ public class Actor {
 
     String idActor;
     String nombreActor;
+    boolean activo;
 
     public Actor(String idActor, String nombreActor) {
 
         this.idActor = idActor;
         this.nombreActor = nombreActor;
+        this.activo = true;
     }
 
     public String getIdActor() {
@@ -27,6 +29,12 @@ public class Actor {
         this.nombreActor = nombreActor;
     }
 
-   
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
 
 }

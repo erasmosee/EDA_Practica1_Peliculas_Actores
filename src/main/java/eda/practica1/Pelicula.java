@@ -8,6 +8,7 @@ public class Pelicula {
     String nombrePelicula;
     int anioPelicula;
     private final HashMap<String, Actor> listaActores;
+    boolean activo;
 
     public Pelicula(String idPelicula, String nombrePelicula, int anioPelicula, HashMap<String, Actor> listaActores) {
 
@@ -15,6 +16,7 @@ public class Pelicula {
         this.nombrePelicula = nombrePelicula;
         this.anioPelicula = anioPelicula;
         this.listaActores = listaActores;
+        this.activo = true;
     }
 
     public void agregarActor(Actor actor) {
@@ -25,7 +27,7 @@ public class Pelicula {
         return listaActores.get(idActor);
     }
 
-     public String getIdPelicula() {
+    public String getIdPelicula() {
         return idPelicula;
     }
 
@@ -40,11 +42,20 @@ public class Pelicula {
     public void setNombrePelicula(String nombrePelicula) {
         this.nombrePelicula = nombrePelicula;
     }
+
     public Integer getAnioPelicula() {
         return anioPelicula;
     }
 
     public void setAnioPelicula(Integer anioPelicula) {
         this.anioPelicula = anioPelicula;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }
