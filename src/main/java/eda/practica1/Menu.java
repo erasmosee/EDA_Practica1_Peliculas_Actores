@@ -78,6 +78,25 @@ public class Menu {
 
     }
 
+    private void procesarOpcionUtilidades(int opcion) {
+
+        switch (opcion) {
+            case 1 ->
+                Utils.mostrarLetrasRaras(listaActores, listaPeliculas);
+            case 2 ->
+                Utils.generarIdActor(listaActores);
+            case 3 ->
+                Utils.barracarga();
+            case 4 ->
+                listaPeliculas.consultarFichaPelicula();
+            case 0 ->
+                System.out.println(i18n.get("menu.opcion.10.utilidades.volver"));
+            default ->
+                System.out.println(i18n.get("msg.opcion.invalida"));
+        }
+
+    }
+
     private void cargarDatos() {
         String rutaDefecto = "./resources";
 
@@ -100,29 +119,17 @@ public class Menu {
             System.out.println(i18n.get("menu.opcion.10.1.letras.raras"));
             System.out.println(i18n.get("menu.opcion.10.2.id.aleatorio"));
             System.out.println(i18n.get("menu.opcion.10.3.barra.carga"));
+            System.out.println(i18n.get("menu.opcion.10.4.ficha.pelicula"));
             System.out.println(i18n.get("menu.opcion.0.atras"));
             System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
 
             try {
                 opcion = Integer.parseInt(sc.nextLine());
-
-                switch (opcion) {
-                    case 1 ->
-                        Utils.mostrarLetrasRaras(listaActores, listaPeliculas);
-                    case 2 ->
-                        Utils.generarIdActor(listaActores);
-                    case 3 ->
-                        Utils.barracarga();
-                    case 6 ->
-                        ListaPeliculas.consultarFichaPelicula();
-                    case 0 ->
-                        System.out.println(i18n.get("menu.opcion.10.utilidades.volver"));
-                    default ->
-                        System.out.println(i18n.get("msg.opcion.invalida"));
-                }
+                procesarOpcionUtilidades(opcion);
             } catch (NumberFormatException e) {
                 System.out.println(i18n.get("msg.opcion.invalida"));
             }
+
         }
     }
 

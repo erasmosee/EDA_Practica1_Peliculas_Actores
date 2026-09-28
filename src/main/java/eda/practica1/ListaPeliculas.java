@@ -41,32 +41,48 @@ public class ListaPeliculas {
         return idPelicula;
     }
 
-    public static void consultarFichaPelicula() {
-
+    private int solicitarAnioPelicula(int viejoAnioPelicula) {
+        System.out.print(i18n.get("menu.opcion.input.anio"));
+        int nuevoAnioPelicula = Integer.parseInt(sc.nextLine().trim());
+        if (!Utils.validarAnio(nuevoAnioPelicula)) {
+            System.out.println(i18n.get("msg.opcion.validar.anio"));
+            return viejoAnioPelicula;
+        }
+        return nuevoAnioPelicula;
     }
 
-    public void modificarAnioPelicula() {
-
-   //     System.out.print(i18n.get("menu.opcion.input.pelicula"));
-   //     String idPelicula = sc.nextLine().trim();
-   //     if (!Utils.validarIdNumerico(idPelicula_old)) {
-   //         System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
-   //         return;
-   //     }
-
+    public void consultarFichaPelicula() {
         String idPelicula = solicitarIdPelicula();
         Pelicula pelicula = buscarPeliculaPorId(idPelicula);
 
         if (pelicula == null) {
             System.out.println(i18n.get("menu.opcion.6.pelicula.no.encontrada"));
+        } else {
+            System.out.println(i18n.get("msg.ficha.pelicula", pelicula.getIdPelicula()));
+            System.out.println(i18n.get("msg.ficha.pelicula.nombre", pelicula.getNombrePelicula()));
+            System.out.println(i18n.get("msg.ficha.pelicula.anio", pelicula.getAnioPelicula()));
         }
 
-        int nuevoAnioPelicula = Integer.parseInt(sc.nextLine().trim());
-        if (!Utils.validarAnio(nuevoAnioPelicula)) {
-            System.out.println(i18n.get("msg.opcion.validar.anio"));
-            return;
+    }
+
+    public void modificarAnioPelicula() {
+
+        //     System.out.print(i18n.get("menu.opcion.input.pelicula"));
+        //     String idPelicula = sc.nextLine().trim();
+        //     if (!Utils.validarIdNumerico(idPelicula_old)) {
+        //         System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
+        //         return;
+        //     }
+        String idPelicula = solicitarIdPelicula();
+        Pelicula pelicula = buscarPeliculaPorId(idPelicula);
+
+        if (pelicula == null) {
+            System.out.println(i18n.get("menu.opcion.6.pelicula.no.encontrada"));
+        } else {
+
+            int nuevoAnioPelicula = solicitarAnioPelicula(pelicula.getAnioPelicula());
+            modificarAnioPelicula(idPelicula, nuevoAnioPelicula);
         }
-        modificarAnioPelicula(idPelicula, nuevoAnioPelicula);
     }
 
     public void modificarAnioPelicula(String idPelicula, int nuevoAnioPelicula) {
