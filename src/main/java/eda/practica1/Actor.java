@@ -42,7 +42,7 @@ public class Actor {
         this.activo = activo;
     }
 
-  public void agregarPelicula(Pelicula pelicula) {
+    public void agregarPelicula(Pelicula pelicula) {
         listaPeliculasDelActor.put(pelicula.getIdPelicula(), pelicula);
     }
 

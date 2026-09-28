@@ -196,7 +196,8 @@ public class Menu {
                 actor.setActivo(true);
                 System.out.println(i18n.get("msg.recuperacion.logica.restaurada", actor.getNombreActor(), actor.getIdActor()));
             }
-            default -> System.out.println(i18n.get("msg.opcion.invalida"));
+            default ->
+                System.out.println(i18n.get("msg.opcion.invalida"));
         }
     }
 

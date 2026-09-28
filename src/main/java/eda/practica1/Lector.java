@@ -130,8 +130,7 @@ public class Lector {
         }
         return String.valueOf(texto.trim());
     }
-
-    
+    // Se ha usado IA para obtener un listado de mensajes graciosos.
     private static final String[] MENSAJES_RAROS = {
         "Alimentando a los actores...",
         "Convenciendo al director de no cambiar el guion...",
