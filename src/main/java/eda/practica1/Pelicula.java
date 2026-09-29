@@ -79,6 +79,19 @@ public class Pelicula {
 
             listaEstrenos.add(datosEstreno);
         }
+        listaEstrenos.sort((a, b) -> {
+            int resultado = Integer.compare(
+                    Integer.parseInt(a[0]),
+                    Integer.parseInt(b[0]));
+            if (resultado == 0) {
+                resultado = a[1].compareTo(b[1]);
+            }
+            if (resultado == 0) {
+                resultado = a[2].compareTo(b[2]);
+            }
+
+            return resultado;
+        });
 
         return listaEstrenos;
     }
@@ -115,6 +128,28 @@ public class Pelicula {
         }
 
         return true;
+    }
+
+    public ArrayList<Actor> devolverActores() {
+        ArrayList<Actor> actores = new ArrayList<>();
+
+        for (Estreno estreno : estrenos.values()) {
+            Actor actorEstreno = estreno.getActor();
+            boolean yaEstaEnLaLista = false;
+
+            for (Actor actor : actores) {
+                if (actor.getIdActor().equals(actorEstreno.getIdActor())) {
+                    yaEstaEnLaLista = true;
+                    break;
+                }
+            }
+
+            if (!yaEstaEnLaLista) {
+                actores.add(actorEstreno);
+            }
+        }
+
+        return actores;
     }
 
     public String getIdPelicula() {

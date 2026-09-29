@@ -113,6 +113,8 @@ public class Menu {
                 insertarActor();
             case 4 ->
                 devolverPeliculasActor();
+            case 5 ->
+                devolverActoresPelicula();
             case 6 ->
                 modificarAnioPelicula();
             case 7 ->
@@ -167,6 +169,36 @@ public class Menu {
 
     }
 
+    private void procesarBorradoActor(int codigoBorrado) {
+        String idActor = solicitarIdActor();
+        if (idActor == null) {
+            return;
+        }
+
+        Actor actor = listaActores.buscarActorPorId(idActor);
+        if (actor == null) {
+            System.out.println(i18n.get("menu.opcion.actor.no.encontrado"));
+            return;
+        }
+
+        switch (codigoBorrado) {
+            case 0 -> {
+                actor.setActivo(false);
+                System.out.println(i18n.get("msg.baja.logica.efectuada", actor.getNombreActor(), actor.getIdActor()));
+            }
+            case 1 -> {
+                listaActores.eliminarActorPorId(actor.getIdActor());
+                System.out.println(i18n.get("msg.baja.definitiva.efectuada", actor.getNombreActor(), actor.getIdActor()));
+            }
+            case 2 -> {
+                actor.setActivo(true);
+                System.out.println(i18n.get("msg.recuperacion.logica.restaurada", actor.getNombreActor(), actor.getIdActor()));
+            }
+            default ->
+                System.out.println(i18n.get("msg.opcion.invalida"));
+        }
+    }
+
     private String solicitarIdActor() {
         System.out.print(i18n.get("menu.opcion.input.actor"));
         String idActor = sc.nextLine().trim();
@@ -209,7 +241,7 @@ public class Menu {
 
         Pelicula pelicula = listaPeliculas.buscarPeliculaPorId(idPelicula);
         if (pelicula == null) {
-            System.out.println(i18n.get("menu.opcion.6.pelicula.no.encontrada"));
+            System.out.println(i18n.get("menu.opcion.pelicula.no.encontrada"));
             return;
         }
 
@@ -226,36 +258,6 @@ public class Menu {
         listaActores.agregarActorPorId(nuevoActor);
         System.out.println(i18n.get("msg.actor.insertado.pelicula",
                 nombreActor, idActor, pelicula.getNombrePelicula(), anio));
-    }
-
-    private void procesarBorradoActor(int codigoBorrado) {
-        String idActor = solicitarIdActor();
-        if (idActor == null) {
-            return;
-        }
-
-        Actor actor = listaActores.buscarActorPorId(idActor);
-        if (actor == null) {
-            System.out.println(i18n.get("menu.opcion.actor.no.encontrado"));
-            return;
-        }
-
-        switch (codigoBorrado) {
-            case 0 -> {
-                actor.setActivo(false);
-                System.out.println(i18n.get("msg.baja.logica.efectuada", actor.getNombreActor(), actor.getIdActor()));
-            }
-            case 1 -> {
-                listaActores.eliminarActorPorId(actor.getIdActor());
-                System.out.println(i18n.get("msg.baja.definitiva.efectuada", actor.getNombreActor(), actor.getIdActor()));
-            }
-            case 2 -> {
-                actor.setActivo(true);
-                System.out.println(i18n.get("msg.recuperacion.logica.restaurada", actor.getNombreActor(), actor.getIdActor()));
-            }
-            default ->
-                System.out.println(i18n.get("msg.opcion.invalida"));
-        }
     }
 
     private void cargarDatos() {
@@ -309,7 +311,7 @@ public class Menu {
 
         Pelicula pelicula = listaPeliculas.buscarPeliculaPorId(idPelicula);
         if (pelicula == null) {
-            System.out.println(i18n.get("menu.opcion.6.pelicula.no.encontrada"));
+            System.out.println(i18n.get("menu.opcion.pelicula.no.encontrada"));
             return;
         }
 
@@ -351,16 +353,20 @@ public class Menu {
         Pelicula pelicula = listaPeliculas.buscarPeliculaPorId(idPelicula);
 
         if (pelicula == null) {
-            System.out.println(i18n.get("menu.opcion.6.pelicula.no.encontrada"));
+            System.out.println(i18n.get("menu.opcion.pelicula.no.encontrada"));
         } else {
-            System.out.println();
-            System.out.println(i18n.get("msg.ficha.pelicula"));
-            ImprimirIdPelicula(pelicula);
-            ImprimirNombrePelicula(pelicula);
-            ImprimirAniosPelicula(pelicula);
-            ImprimirActoresPelicula(pelicula);
-            ImprimirActoresporAnioEstreno(pelicula);
+
+            ImprimirFichaPelicula(pelicula);
         }
+    }
+
+    private void ImprimirFichaPelicula(Pelicula pelicula) {
+        System.out.println();
+        System.out.println(i18n.get("msg.ficha.pelicula"));
+        ImprimirIdPelicula(pelicula);
+        ImprimirNombrePelicula(pelicula);
+        ImprimirAniosPelicula(pelicula);
+        ImprimirActoresporAnioEstreno(pelicula);
     }
 
     private void ImprimirIdPelicula(Pelicula pelicula) {
@@ -384,24 +390,16 @@ public class Menu {
         System.out.println();
     }
 
-    private void ImprimirActoresPelicula(Pelicula pelicula) {
-        System.out.println(i18n.get("msg.ficha.pelicula.actores"));
-        // boolean flagPrimerActor = true;
-        for (String[] datosActor : pelicula.devolverActoresEstreno()) {
-            // if (!flagPrimerActor) {
-            //     System.out.print(", ");
-            // }
-            System.out.println(datosActor[0] + " - " + datosActor[1]);
-            // flagPrimerActor = false;
-        }
-        System.out.println();
-    }
-
     private void ImprimirActoresporAnioEstreno(Pelicula pelicula) {
         System.out.println(i18n.get("msg.ficha.pelicula.actores"));
+        String anioAnterior = "0";
         for (String[] datosEstreno : pelicula.devolverEstrenos()) {
+            if (!anioAnterior.equals(datosEstreno[0])) {
+                System.out.println();
+            }
             System.out.println("Año: " + datosEstreno[0]
                     + " | Actor: " + datosEstreno[1] + " - " + datosEstreno[2]);
+            anioAnterior = datosEstreno[0];
         }
     }
 
@@ -415,8 +413,28 @@ public class Menu {
         if (actor == null || !actor.isActivo()) {
             System.out.println(i18n.get("menu.opcion.actor.no.encontrado"));
         } else {
+            System.out.println(i18n.get("msg.opcion.devolver.peliculas.actor", actor.getIdActor(), actor.getNombreActor()));
+
             for (Pelicula pelicula : listaActores.devolverPeliculasActor(actor.getIdActor())) {
                 System.out.println(pelicula.getNombrePelicula());
+            }
+        }
+    }
+
+    private void devolverActoresPelicula() {
+        String idPelicula = solicitarIdPelicula();
+        if (idPelicula == null) {
+            return;
+        }
+
+        Pelicula pelicula = listaPeliculas.buscarPeliculaPorId(idPelicula);
+        if (pelicula == null || !pelicula.isActivo()) {
+            System.out.println(i18n.get("menu.opcion.pelicula.no.encontrada"));
+        } else {
+            System.out.println(i18n.get("msg.opcion.devolver.actores.pelicula", pelicula.getIdPelicula(), pelicula.getNombrePelicula()));
+
+            for (Actor actor : listaPeliculas.devolverActoresPelicula(pelicula.getIdPelicula())) {
+                System.out.println(actor.getNombreActor());
             }
         }
     }

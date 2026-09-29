@@ -1,5 +1,6 @@
 package eda.practica1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ListaPeliculas {
@@ -27,5 +28,13 @@ public class ListaPeliculas {
     }
 
     
+    public ArrayList<Actor> devolverActoresPelicula(String idPelicula) {
+        Pelicula pelicula = buscarPeliculaPorId(idPelicula);
+
+        if (pelicula == null) {
+            return new ArrayList<>();
+        }
+        return pelicula.devolverActores();
+    }
 
 }
