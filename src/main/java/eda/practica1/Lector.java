@@ -109,17 +109,17 @@ public class Lector {
 
                             }
 
-                            if ((pelicula.buscarParticipacion(idActor, anio) != null) || (actor.buscarParticipacion(idPelicula, anio) != null)) {
-                                System.out.println(i18n.get("msg.duplicado.relacion",
-                                    String.valueOf(anio), idActor, nombreActor, idPelicula, nombrePelicula));
+                            if ((pelicula.buscarEstreno(idActor, anio) != null) || (actor.buscarEstreno(idPelicula, anio) != null)) {
+                                // System.out.println(i18n.get("msg.duplicado.relacion",
+                                //     String.valueOf(anio), idActor, nombreActor, idPelicula, nombrePelicula));
                                 registrosDuplicados++;
                             } else {
 
                                 listaPeliculasId.agregarPeliculaPorId(pelicula);
                                 listaActoresId.agregarActorPorId(actor);
-                                Participacion participacion = new Participacion(pelicula, actor, anio);
-                                actor.agregarParticipacion(participacion);
-                                pelicula.agregarParticipacion(participacion);
+                                Estreno estreno = new Estreno(pelicula, actor, anio);
+                                actor.agregarEstreno(estreno);
+                                pelicula.agregarEstreno(estreno);
                                 registrosEfectivos++;
                             }
                             registrosTotales++;

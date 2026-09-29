@@ -2,13 +2,13 @@ package eda.practica1;
 
 import java.util.Objects;
 
-public class Participacion {
+public class Estreno {
 
     private Pelicula pelicula;
     private Actor actor;
     private int anio;
 
-    public Participacion(Pelicula pelicula, Actor actor, int anio) {
+    public Estreno(Pelicula pelicula, Actor actor, int anio) {
         this.pelicula = pelicula;
         this.actor = actor;
         this.anio = anio;
@@ -43,10 +43,10 @@ public class Participacion {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Participacion)) {
+        if (!(o instanceof Estreno)) {
             return false;
         }
-        Participacion that = (Participacion) o;
+        Estreno that = (Estreno) o;
         return anio == that.anio
                 && Objects.equals(pelicula.getIdPelicula(), that.pelicula.getIdPelicula())
                 && Objects.equals(actor.getIdActor(), that.actor.getIdActor());

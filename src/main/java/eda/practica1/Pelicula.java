@@ -9,7 +9,7 @@ public class Pelicula {
     String idPelicula;
     String nombrePelicula;
     boolean activo;
-    private final HashMap<String, Participacion> participaciones = new HashMap<>();
+    private final HashMap<String, Estreno> estrenos = new HashMap<>();
 
     public Pelicula(String idPelicula, String nombrePelicula) {
 
@@ -18,22 +18,22 @@ public class Pelicula {
         this.activo = true;
     }
 
-    public void agregarParticipacion(Participacion participacion) {
-        String clave = participacion.getActor().getIdActor() + "_" + participacion.getAnio();
-        participaciones.put(clave, participacion);
+    public void agregarEstreno(Estreno estreno) {
+        String clave = estreno.getActor().getIdActor() + "_" + estreno.getAnio();
+        estrenos.put(clave, estreno);
     }
 
-    public Participacion buscarParticipacion(String idActor, int anio) {
+    public Estreno buscarEstreno(String idActor, int anio) {
         String clave = idActor + "_" + anio;
-        return participaciones.get(clave);
+        return estrenos.get(clave);
     }
 
-    public ArrayList<Integer> devolverAniosParticipacion() {
+    public ArrayList<Integer> devolverAniosEstreno() {
         ArrayList<Integer> anios = new ArrayList<>();
 
-        for (Participacion participacion : participaciones.values()) {
-            if (!anios.contains(participacion.getAnio())) {
-                anios.add(participacion.getAnio());
+        for (Estreno estreno : estrenos.values()) {
+            if (!anios.contains(estreno.getAnio())) {
+                anios.add(estreno.getAnio());
             }
         }
 
@@ -41,15 +41,15 @@ public class Pelicula {
         return anios;
     }
 
-    public ArrayList<String[]> devolverActoresParticipacion() {
+    public ArrayList<String[]> devolverActoresEstreno() {
         ArrayList<String[]> actores = new ArrayList<>();
 
-        for (Participacion participacion : participaciones.values()) {
-            Actor actorParticipacion = participacion.getActor();
+        for (Estreno estreno : estrenos.values()) {
+            Actor actorEstreno = estreno.getActor();
             boolean actorYaEsta = false;
 
             for (String[] datosActor : actores) {
-                if (datosActor[0].equals(actorParticipacion.getIdActor())) {
+                if (datosActor[0].equals(actorEstreno.getIdActor())) {
                     actorYaEsta = true;
                     break;
                 }
@@ -57,8 +57,8 @@ public class Pelicula {
 
             if (!actorYaEsta) {
                 String[] datosActor = new String[2];
-                datosActor[0] = actorParticipacion.getIdActor();
-                datosActor[1] = actorParticipacion.getNombreActor();
+                datosActor[0] = actorEstreno.getIdActor();
+                datosActor[1] = actorEstreno.getNombreActor();
                 actores.add(datosActor);
             }
         }
@@ -66,52 +66,52 @@ public class Pelicula {
         return actores;
     }
 
-    public ArrayList<String[]> devolverParticipaciones() {
-        ArrayList<String[]> listaParticipaciones = new ArrayList<>();
+    public ArrayList<String[]> devolverEstrenos() {
+        ArrayList<String[]> listaEstrenos = new ArrayList<>();
 
-        for (Participacion participacion : participaciones.values()) {
-            Actor actorParticipacion = participacion.getActor();
+        for (Estreno estreno : estrenos.values()) {
+            Actor actorEstreno = estreno.getActor();
 
-            String[] datosParticipacion = new String[3];
-            datosParticipacion[0] = String.valueOf(participacion.getAnio());
-            datosParticipacion[1] = actorParticipacion.getIdActor();
-            datosParticipacion[2] = actorParticipacion.getNombreActor();
+            String[] datosEstreno = new String[3];
+            datosEstreno[0] = String.valueOf(estreno.getAnio());
+            datosEstreno[1] = actorEstreno.getIdActor();
+            datosEstreno[2] = actorEstreno.getNombreActor();
 
-            listaParticipaciones.add(datosParticipacion);
+            listaEstrenos.add(datosEstreno);
         }
 
-        return listaParticipaciones;
+        return listaEstrenos;
     }
 
-    public boolean modificarAnioParticipaciones(int anioOrigen, int anioNuevo) {
-        ArrayList<Participacion> participacionesAModificar = new ArrayList<>();
+    public boolean modificarAnioEstrenos(int anioOrigen, int anioNuevo) {
+        ArrayList<Estreno> estrenosAModificar = new ArrayList<>();
 
-        for (Participacion participacion : participaciones.values()) {
-            if (participacion.getAnio() == anioOrigen) {
-                participacionesAModificar.add(participacion);
+        for (Estreno estreno : estrenos.values()) {
+            if (estreno.getAnio() == anioOrigen) {
+                estrenosAModificar.add(estreno);
             }
         }
 
-        if (participacionesAModificar.isEmpty()) {
+        if (estrenosAModificar.isEmpty()) {
             return false;
         }
 
-        for (Participacion participacion : participacionesAModificar) {
-            Actor actor = participacion.getActor();
-            if (actor.buscarParticipacion(idPelicula, anioNuevo) != null) {
+        for (Estreno estreno : estrenosAModificar) {
+            Actor actor = estreno.getActor();
+            if (actor.buscarEstreno(idPelicula, anioNuevo) != null) {
                 return false;
             }
         }
 
-        for (Participacion participacion : participacionesAModificar) {
-            Actor actor = participacion.getActor();
+        for (Estreno estreno : estrenosAModificar) {
+            Actor actor = estreno.getActor();
             String claveAntigua = actor.getIdActor() + "_" + anioOrigen;
-            participaciones.remove(claveAntigua);
-            actor.eliminarParticipacion(idPelicula, anioOrigen);
+            estrenos.remove(claveAntigua);
+            actor.eliminarEstreno(idPelicula, anioOrigen);
 
-            participacion.setAnio(anioNuevo);
-            agregarParticipacion(participacion);
-            actor.agregarParticipacion(participacion);
+            estreno.setAnio(anioNuevo);
+            agregarEstreno(estreno);
+            actor.agregarEstreno(estreno);
         }
 
         return true;

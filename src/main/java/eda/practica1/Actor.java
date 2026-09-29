@@ -8,7 +8,7 @@ public class Actor {
     String idActor;
     String nombreActor;
     boolean activo;
-    private final HashMap<String, Participacion> participaciones = new HashMap<>();
+    private final HashMap<String, Estreno> estrenos = new HashMap<>();
 
     public Actor(String idActor, String nombreActor) {
 
@@ -42,37 +42,37 @@ public class Actor {
         this.activo = activo;
     }
 
-    public void agregarParticipacion(Participacion participacion) {
-        String clave = participacion.getPelicula().getIdPelicula() + "_" + participacion.getAnio();
-        participaciones.put(clave, participacion);
+    public void agregarEstreno(Estreno estreno) {
+        String clave = estreno.getPelicula().getIdPelicula() + "_" + estreno.getAnio();
+        estrenos.put(clave, estreno);
     }
 
-    public Participacion buscarParticipacion(String idPelicula, int anio) {
+    public Estreno buscarEstreno(String idPelicula, int anio) {
         String clave = idPelicula + "_" + anio;
-        return participaciones.get(clave);
+        return estrenos.get(clave);
     }
 
-    public void eliminarParticipacion(String idPelicula, int anio) {
+    public void eliminarEstreno(String idPelicula, int anio) {
         String clave = idPelicula + "_" + anio;
-        participaciones.remove(clave);
+        estrenos.remove(clave);
     }
 
     public ArrayList<Pelicula> devolverPeliculas() {
         ArrayList<Pelicula> peliculas = new ArrayList<>();
 
-        for (Participacion participacion : participaciones.values()) {
-            Pelicula peliculaParticipacion = participacion.getPelicula();
+        for (Estreno estreno : estrenos.values()) {
+            Pelicula peliculaEstreno = estreno.getPelicula();
             boolean yaEstaEnLaLista = false;
 
             for (Pelicula pelicula : peliculas) {
-                if (pelicula.getIdPelicula().equals(peliculaParticipacion.getIdPelicula())) {
+                if (pelicula.getIdPelicula().equals(peliculaEstreno.getIdPelicula())) {
                     yaEstaEnLaLista = true;
                     break;
                 }
             }
 
             if (!yaEstaEnLaLista) {
-                peliculas.add(peliculaParticipacion);
+                peliculas.add(peliculaEstreno);
             }
         }
 

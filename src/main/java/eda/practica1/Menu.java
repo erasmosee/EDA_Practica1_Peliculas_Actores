@@ -220,9 +220,9 @@ public class Menu {
 
         String idActor = Utils.generarIdActor(listaActores);
         Actor nuevoActor = new Actor(idActor, nombreActor);
-        Participacion participacion = new Participacion(pelicula, nuevoActor, anio);
-        nuevoActor.agregarParticipacion(participacion);
-        pelicula.agregarParticipacion(participacion);
+        Estreno estreno = new Estreno(pelicula, nuevoActor, anio);
+        nuevoActor.agregarEstreno(estreno);
+        pelicula.agregarEstreno(estreno);
         listaActores.agregarActorPorId(nuevoActor);
         System.out.println(i18n.get("msg.actor.insertado.pelicula",
                 nombreActor, idActor, pelicula.getNombrePelicula(), anio));
@@ -313,19 +313,19 @@ public class Menu {
             return;
         }
 
-        java.util.ArrayList<Integer> anios = pelicula.devolverAniosParticipacion();
+        java.util.ArrayList<Integer> anios = pelicula.devolverAniosEstreno();
         if (anios.isEmpty()) {
-            System.out.println(i18n.get("msg.pelicula.sin.participaciones"));
+            System.out.println(i18n.get("msg.pelicula.sin.estrenos"));
             return;
         }
 
-        System.out.println(i18n.get("msg.pelicula.anios.participacion", anios));
+        System.out.println(i18n.get("msg.pelicula.anios.estrenos", anios));
         int anioOrigen = solicitarAnio("menu.opcion.input.anio.origen");
         if (anioOrigen == -1) {
             return;
         }
         if (!anios.contains(anioOrigen)) {
-            System.out.println(i18n.get("msg.anio.sin.participaciones", String.valueOf(anioOrigen)));
+            System.out.println(i18n.get("msg.anio.sin.estrenos", String.valueOf(anioOrigen)));
             return;
         }
 
@@ -338,7 +338,7 @@ public class Menu {
             return;
         }
 
-        if (pelicula.modificarAnioParticipaciones(anioOrigen, anioNuevo)) {
+        if (pelicula.modificarAnioEstrenos(anioOrigen, anioNuevo)) {
             System.out.println(i18n.get("msg.anio.modificado",
                     String.valueOf(anioOrigen), String.valueOf(anioNuevo), pelicula.getNombrePelicula()));
         } else {
@@ -359,7 +359,7 @@ public class Menu {
             ImprimirNombrePelicula(pelicula);
             ImprimirAniosPelicula(pelicula);
             ImprimirActoresPelicula(pelicula);
-            ImprimirActoresporAnioParticipacion(pelicula);
+            ImprimirActoresporAnioEstreno(pelicula);
         }
     }
 
@@ -374,7 +374,7 @@ public class Menu {
     private void ImprimirAniosPelicula(Pelicula pelicula) {
         System.out.print(i18n.get("msg.ficha.pelicula.anios"));
         boolean flagAnioPrimeraVez = true;
-        for (Integer anios : pelicula.devolverAniosParticipacion()) {
+        for (Integer anios : pelicula.devolverAniosEstreno()) {
             if (!flagAnioPrimeraVez) {
                 System.out.print(", ");
             }
@@ -387,7 +387,7 @@ public class Menu {
     private void ImprimirActoresPelicula(Pelicula pelicula) {
         System.out.println(i18n.get("msg.ficha.pelicula.actores"));
         // boolean flagPrimerActor = true;
-        for (String[] datosActor : pelicula.devolverActoresParticipacion()) {
+        for (String[] datosActor : pelicula.devolverActoresEstreno()) {
             // if (!flagPrimerActor) {
             //     System.out.print(", ");
             // }
@@ -397,11 +397,11 @@ public class Menu {
         System.out.println();
     }
 
-    private void ImprimirActoresporAnioParticipacion(Pelicula pelicula) {
+    private void ImprimirActoresporAnioEstreno(Pelicula pelicula) {
         System.out.println(i18n.get("msg.ficha.pelicula.actores"));
-        for (String[] datosParticipacion : pelicula.devolverParticipaciones()) {
-            System.out.println("Año: " + datosParticipacion[0]
-                    + " | Actor: " + datosParticipacion[1] + " - " + datosParticipacion[2]);
+        for (String[] datosEstreno : pelicula.devolverEstrenos()) {
+            System.out.println("Año: " + datosEstreno[0]
+                    + " | Actor: " + datosEstreno[1] + " - " + datosEstreno[2]);
         }
     }
 
