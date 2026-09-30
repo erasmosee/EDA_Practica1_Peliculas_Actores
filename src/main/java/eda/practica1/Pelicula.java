@@ -28,6 +28,11 @@ public class Pelicula {
         return estrenos.get(clave);
     }
 
+    public void eliminarEstreno(String idActor, int anio) {
+        String clave = idActor + "_" + anio;
+        estrenos.remove(clave);
+    }
+
     public ArrayList<Integer> devolverAniosEstreno() {
         ArrayList<Integer> anios = new ArrayList<>();
 
@@ -196,4 +201,15 @@ public class Pelicula {
         this.activo = activo;
     }
 
+    public void borrarPelicula() {
+        HashMap<Integer, ArrayList<Actor>> actoresAnio = mapearActores();
+
+        for (Integer anio : devolverAniosEstreno()) {
+            ArrayList<Actor> actoresDelAnio = actoresAnio.get(anio);
+            for (Actor actor : actoresDelAnio) {
+                actor.eliminarEstreno(idPelicula, anio);
+
+            }
+        }
+    }
 }

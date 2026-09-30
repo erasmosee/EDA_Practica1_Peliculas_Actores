@@ -186,6 +186,7 @@ public class Menu {
                 System.out.println(i18n.get("msg.baja.logica.efectuada", actor.getNombreActor(), actor.getIdActor()));
             }
             case 1 -> {
+                actor.borrarActor();
                 listaActores.eliminarActorPorId(actor.getIdActor());
                 System.out.println(i18n.get("msg.baja.definitiva.efectuada", actor.getNombreActor(), actor.getIdActor()));
             }

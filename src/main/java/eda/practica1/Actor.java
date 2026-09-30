@@ -113,4 +113,16 @@ public class Actor {
         return mapaPeliculas;
     }
 
+    public void borrarActor() {
+
+        HashMap<Integer, ArrayList<Pelicula>> peliculasAnio = mapearPeliculas();
+
+        for (Integer anio : devolverAniosEstreno()) {
+            ArrayList<Pelicula> peliculasDelAnio = peliculasAnio.get(anio);
+            for (Pelicula pelicula : peliculasDelAnio) {
+                pelicula.eliminarEstreno(idActor, anio);
+
+            }
+        }
+    }
 }
