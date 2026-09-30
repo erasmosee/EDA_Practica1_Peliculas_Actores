@@ -1,10 +1,8 @@
 package eda.practica1;
 
-import java.util.Scanner;
 
 public class Menu {
 
-    private final Scanner sc;
     private final Lector lector;
     private final ListaActores listaActores;
     private final ListaPeliculas listaPeliculas;
@@ -12,7 +10,6 @@ public class Menu {
     private final Idioma i18n = Idioma.getInstance();
 
     public Menu(Lector lector, ListaActores listaActores, ListaPeliculas listaPeliculas) {
-        this.sc = new Scanner(System.in);
         this.lector = lector;
         this.listaActores = listaActores;
         this.listaPeliculas = listaPeliculas;
@@ -44,7 +41,7 @@ public class Menu {
             System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
 
             try {
-                opcion = Integer.parseInt(sc.nextLine());
+                opcion = Scaner.teclearInteger();
                 procesarOpcion(opcion);
             } catch (NumberFormatException e) {
                 System.out.println(i18n.get("msg.opcion.invalida"));
@@ -67,7 +64,7 @@ public class Menu {
             System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
 
             try {
-                opcion = Integer.parseInt(sc.nextLine());
+                opcion = Scaner.teclearInteger();
                 procesarOpcionUtilidades(opcion);
             } catch (NumberFormatException e) {
                 System.out.println(i18n.get("msg.opcion.invalida"));
@@ -88,7 +85,7 @@ public class Menu {
             System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
 
             try {
-                opcion = Integer.parseInt(sc.nextLine());
+                opcion = Scaner.teclearInteger();
                 procesarOpcionBorrado(opcion);
             } catch (NumberFormatException e) {
                 System.out.println(i18n.get("msg.opcion.invalida"));
@@ -201,7 +198,7 @@ public class Menu {
 
     private String solicitarIdActor() {
         System.out.print(i18n.get("menu.opcion.input.actor"));
-        String idActor = sc.nextLine().trim();
+        String idActor = Scaner.teclearString();
         if (!Utils.validarIdNumerico(idActor)) {
             System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
             return null;
@@ -226,14 +223,14 @@ public class Menu {
 
     private void insertarActor() {
         System.out.print(i18n.get("menu.opcion.input.nombre"));
-        String nombreActor = sc.nextLine().trim();
+        String nombreActor = Scaner.teclearString();
         if (!Utils.validarNombre(nombreActor)) {
             System.out.println(i18n.get("msg.opcion.validar.nombre"));
             return;
         }
 
         System.out.print(i18n.get("menu.opcion.input.pelicula"));
-        String idPelicula = sc.nextLine().trim();
+        String idPelicula = Scaner.teclearString();
         if (!Utils.validarIdNumerico(idPelicula)) {
             System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
             return;
@@ -264,7 +261,7 @@ public class Menu {
         String rutaDefecto = "./resources";
 
         System.out.print(i18n.get("menu.opcion.1.insertar.ruta", rutaDefecto));
-        String ruta = sc.nextLine().trim();
+        String ruta = Scaner.teclearString();
 
         if (ruta.isEmpty()) {
             ruta = rutaDefecto;
@@ -278,7 +275,7 @@ public class Menu {
     private String solicitarIdPelicula() {
 
         System.out.print(i18n.get("menu.opcion.input.pelicula"));
-        String idPelicula = sc.nextLine().trim();
+        String idPelicula = Scaner.teclearString();
         if (!Utils.validarIdNumerico(idPelicula)) {
             System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
             return null;
@@ -290,7 +287,7 @@ public class Menu {
         System.out.print(i18n.get(claveMensaje));
         int anio;
         try {
-            anio = Integer.parseInt(sc.nextLine().trim());
+            anio = Scaner.teclearInteger();
         } catch (NumberFormatException e) {
             System.out.println(i18n.get("msg.opcion.validar.anio"));
             return -1;
