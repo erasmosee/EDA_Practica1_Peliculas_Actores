@@ -152,6 +152,26 @@ public class Pelicula {
         return actores;
     }
 
+    public HashMap<Integer, ArrayList<Actor>> mapearActores() {
+        HashMap<Integer, ArrayList<Actor>> mapaActores = new HashMap<>();
+
+        for (Estreno estreno : estrenos.values()) {
+            Integer anio = estreno.getAnio();
+            Actor actor = estreno.getActor();
+
+            ArrayList<Actor> actoresAnio = mapaActores.get(anio);
+
+            if (actoresAnio == null) {
+                actoresAnio = new ArrayList<>();
+                mapaActores.put(anio, actoresAnio);
+            }
+
+            actoresAnio.add(actor);
+        }
+
+        return mapaActores;
+    }
+
     public String getIdPelicula() {
         return idPelicula;
     }

@@ -1,6 +1,7 @@
 package eda.practica1;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Actor {
@@ -77,6 +78,39 @@ public class Actor {
         }
 
         return peliculas;
+    }
+
+    public ArrayList<Integer> devolverAniosEstreno() {
+        ArrayList<Integer> anios = new ArrayList<>();
+
+        for (Estreno estreno : estrenos.values()) {
+            if (!anios.contains(estreno.getAnio())) {
+                anios.add(estreno.getAnio());
+            }
+        }
+
+        Collections.sort(anios);
+        return anios;
+    }
+
+    public HashMap<Integer, ArrayList<Pelicula>> mapearPeliculas() {
+        HashMap<Integer, ArrayList<Pelicula>> mapaPeliculas = new HashMap<>();
+
+        for (Estreno estreno : estrenos.values()) {
+            Integer anio = estreno.getAnio();
+            Pelicula pelicula = estreno.getPelicula();
+
+            ArrayList<Pelicula> peliculasAnio = mapaPeliculas.get(anio);
+
+            if (peliculasAnio == null) {
+                peliculasAnio = new ArrayList<>();
+                mapaPeliculas.put(anio, peliculasAnio);
+            }
+
+            peliculasAnio.add(pelicula);
+        }
+
+        return mapaPeliculas;
     }
 
 }

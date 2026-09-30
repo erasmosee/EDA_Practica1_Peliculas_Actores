@@ -1,5 +1,7 @@
 package eda.practica1;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Menu {
 
@@ -407,14 +409,31 @@ public class Menu {
         }
 
         Actor actor = listaActores.buscarActorPorId(idActor);
+
         if (actor == null || !actor.isActivo()) {
             System.out.println(i18n.get("menu.opcion.actor.no.encontrado"));
         } else {
             System.out.println(i18n.get("msg.opcion.devolver.peliculas.actor", actor.getIdActor(), actor.getNombreActor()));
 
-            for (Pelicula pelicula : listaActores.devolverPeliculasActor(actor.getIdActor())) {
-                System.out.println(pelicula.getNombrePelicula());
+            HashMap<Integer, ArrayList<Pelicula>> peliculasAnio = actor.mapearPeliculas();
+
+            for (Integer anio : actor.devolverAniosEstreno()) {
+                System.out.println("Año: " + anio);
+
+                ArrayList<Pelicula> peliculasDelAnio = peliculasAnio.get(anio);
+
+                for (Pelicula pelicula : peliculasDelAnio) {
+                    System.out.println("  " + pelicula.getNombrePelicula()
+                            + " (" + pelicula.getIdPelicula() + ")");
+                }
             }
+
+            // for (Pelicula pelicula : actor.devolverPeliculas()) {
+            //     System.out.println(pelicula.getNombrePelicula() + " (" + pelicula.getIdPelicula() + ")");
+            // }
+            // for (Pelicula pelicula : listaActores.devolverPeliculasActor(actor.getIdActor())) {
+            //     System.out.println(pelicula.getNombrePelicula());
+            // }
         }
     }
 
@@ -430,9 +449,25 @@ public class Menu {
         } else {
             System.out.println(i18n.get("msg.opcion.devolver.actores.pelicula", pelicula.getIdPelicula(), pelicula.getNombrePelicula()));
 
-            for (Actor actor : listaPeliculas.devolverActoresPelicula(pelicula.getIdPelicula())) {
-                System.out.println(actor.getNombreActor());
+            HashMap<Integer, ArrayList<Actor>> actoresAnio = pelicula.mapearActores();
+
+            for (Integer anio : pelicula.devolverAniosEstreno()) {
+                System.out.println("Año: " + anio);
+
+                ArrayList<Actor> actoresDelAnio = actoresAnio.get(anio);
+
+                for (Actor actor : actoresDelAnio) {
+                    System.out.println("  " + actor.getNombreActor()
+                            + " (" + actor.getIdActor() + ")");
+                }
             }
+
+            // for (Actor actor : pelicula.devolverActores()) {
+            //     System.out.println(actor.getNombreActor() + " (" + actor.getIdActor() + ")");
+            // }
+            // for (Actor actor : listaPeliculas.devolverActoresPelicula(pelicula.getIdPelicula())) {
+            //     System.out.println(actor.getNombreActor());
+            // }
         }
     }
 
