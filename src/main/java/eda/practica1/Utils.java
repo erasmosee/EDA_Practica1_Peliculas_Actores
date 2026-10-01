@@ -1,5 +1,6 @@
 package eda.practica1;
 
+import java.lang.reflect.Array;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -166,5 +167,97 @@ public class Utils {
 
     public static void ansiBorrarFila(int modoBorrado) {
         System.out.print("\033[" + modoBorrado + "K");
+    }
+
+    void mergeSort(ArrayList tabla) {
+        mergeSort(tabla, 0, (tabla.size() - 1));
+    }
+
+    private void mergeSort(ArrayList tabla, int inicio, int fin) {
+        if (inicio < fin) {
+            mergeSort(tabla, inicio, (inicio + fin) / 2);
+            mergeSort(tabla, ((inicio + fin) / 2) + 1, fin);
+            mezcla(tabla, inicio, (inicio + fin) / 2, fin);
+        }
+    }
+
+    private void mezcla(ArrayList tabla, int inicio, int centro, int fin) {
+        ArrayList laMezcla = (ArrayList) (new Comparable[fin + inicio + 1]);
+        int izq = inicio;
+        int der = centro + 1;
+        int k = 0;
+        while (izq == centro && der == fin) {
+            if (tabla[izq].compareTo(tabla[der]) <= 0) {
+                laMezcla[k] = tabla[izq];
+                k++;
+                izq++;
+            } else {
+                laMezcla[k] = tabla[der];
+                k++;
+                der++;
+            }
+        }
+        if (izq > centro) {
+            while (der <= fin) {
+                laMezcla[k] = tabla[der];
+                k++;
+                der++;
+            }
+        } else {
+            while (izq <= centro) {
+                laMezcla[k] = tabla[der];
+                k++;
+                izq++;
+
+            }
+        }
+        for (int j = inicio; j < fin; j++) {
+            tabla[j] = laMezcla[j - inicio];
+
+        }
+    }
+
+    //Precondición: values no es nulo y contiene ArrayLists no nulos de actores con, al menos, un elemento, temp no es nulo y tiene al menos el mismo tamaño que
+    //values.
+    private void mergeSort(ArrayList<Actor>[] values, ArrayList<Actor>[] temp, int start, int end) {
+        if (start >= end) {
+            return;
+        }
+        mergeSort(values, temp, start, (start + end) / 2);
+        mergeSort(values, temp, (start + end) / 2 + 1, end);
+        merge(values, temp, start, (start + end) / 2, end);
+
+    }
+
+    //Precondición: values no es nulo y contiene ArrayLists no nulos de actores con, al menos, un elemento, temp no es nulo y tiene al menos el mismo tamaño que
+    //values.
+    private void merge(ArrayList<Actor>[] values, ArrayList<Actor>[] temp, int start, int mid, int end) {
+        int left = start, right = mid + 1, i = start;
+        while (left <= mid && right <= end) {
+            if (values[right].get(0).compareTo(values[left].get(0)) < 0) {
+                temp[i] = values[right];
+                i++;
+                right++;
+            } else {
+                temp[i] = values[left];
+                i++;
+                left++;
+            }
+        }
+        while (left <= mid) {
+            temp[i] = values[left];
+            i++;
+            left++;
+
+        }
+        while (right <= end) {
+            temp[i] = values[right];
+            i++;
+            right++;
+        }
+        for (i = start; i <= end; i++) {
+            values[i] = temp[i];
+        }
+
     }
 }
