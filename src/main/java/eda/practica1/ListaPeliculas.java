@@ -27,7 +27,14 @@ public class ListaPeliculas {
         return listaPeliculas;
     }
 
-    
+    public ArrayList<String> listarPeliculas() {
+        ArrayList<String> arrayPeliculas = new ArrayList<>();
+        for (Pelicula pelicula : listaPeliculas.values()) {
+            arrayPeliculas.add(pelicula.getNombrePelicula());
+        }
+        return arrayPeliculas;
+    }
+
     public ArrayList<Actor> devolverActoresPelicula(String idPelicula) {
         Pelicula pelicula = buscarPeliculaPorId(idPelicula);
 

@@ -45,4 +45,11 @@ public class ListaActores {
         return actor.devolverPeliculas();
     }
 
+    public ArrayList<String> listarActores() {
+        ArrayList<String> arrayActores = new ArrayList<>();
+        for (Actor actor : listaActores.values()) {
+            arrayActores.add(actor.getNombreActor());
+        }
+        return arrayActores;
+    }
 }
