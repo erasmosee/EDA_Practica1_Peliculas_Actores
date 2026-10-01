@@ -110,7 +110,7 @@ public class Utils {
     public static String generarIdActor(ListaActores listaActores) {
         String idAleatorio;
         do {
-            long numeroAleatorio = (long) (Math.random() * 9990000000L) + 10000000L;
+            long numeroAleatorio = (long) (Math.random() * 99900000L) + 100000L;
             idAleatorio = String.valueOf(numeroAleatorio);
         } while (listaActores.existe(idAleatorio));
         return idAleatorio;

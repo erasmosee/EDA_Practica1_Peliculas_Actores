@@ -259,32 +259,47 @@ public class Menu {
             return;
         }
 
-        System.out.print(i18n.get("menu.opcion.input.pelicula"));
-        String idPelicula = Scaner.teclearString();
-        if (!Utils.validarIdNumerico(idPelicula)) {
-            System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
-            return;
-        }
-
-        Pelicula pelicula = listaPeliculas.buscarPeliculaPorId(idPelicula);
-        if (pelicula == null) {
-            System.out.println(i18n.get("menu.opcion.pelicula.no.encontrada"));
-            return;
-        }
-
-        int anio = solicitarAnio("menu.opcion.input.anio");
-        if (anio == -1) {
-            return;
-        }
-
         String idActor = Utils.generarIdActor(listaActores);
         Actor nuevoActor = new Actor(idActor, nombreActor);
-        Estreno estreno = new Estreno(pelicula, nuevoActor, anio);
-        nuevoActor.agregarEstreno(estreno);
-        pelicula.agregarEstreno(estreno);
-        listaActores.agregarActorPorId(nuevoActor);
-        System.out.println(i18n.get("msg.actor.insertado.pelicula",
-                nombreActor, idActor, pelicula.getNombrePelicula(), anio));
+        Pelicula pelicula = null;
+        int anio = 0;
+        System.out.print(i18n.get("menu.opcion.numero.peliculas"));
+
+        int numPeliculas = Scaner.teclearInteger();
+        if (numPeliculas < 1) {
+            return;
+        }
+        for (int i = 1; i <= numPeliculas; i++) {
+
+            System.out.print(i18n.get("menu.opcion.input.pelicula"));
+            String idPelicula = Scaner.teclearString();
+            if (!Utils.validarIdNumerico(idPelicula)) {
+                System.out.println(i18n.get("msg.opcion.validar.id.numerico"));
+                return;
+            }
+
+            pelicula = listaPeliculas.buscarPeliculaPorId(idPelicula);
+            if (pelicula == null) {
+                System.out.println(i18n.get("menu.opcion.pelicula.no.encontrada"));
+                return;
+            }
+
+            anio = solicitarAnio("menu.opcion.input.anio");
+            if (anio == -1) {
+                return;
+            }
+            Estreno estreno = new Estreno(pelicula, nuevoActor, anio);
+            nuevoActor.agregarEstreno(estreno);
+            pelicula.agregarEstreno(estreno);
+            if (i == 1) {
+                listaActores.agregarActorPorId(nuevoActor);
+            } else {
+                listaActores.buscarActorPorId(idActor).agregarEstreno(estreno);
+            }
+
+        }
+
+        System.out.println(i18n.get("msg.actor.insertado.pelicula", nombreActor, idActor));
     }
 
     private void cargarDatos() {
