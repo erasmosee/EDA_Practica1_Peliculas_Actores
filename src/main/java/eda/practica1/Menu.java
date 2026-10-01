@@ -1,11 +1,15 @@
 package eda.practica1;
 
+import java.io.IOException;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Menu {
 
     private final Lector lector;
+    private final Escritor escritor;
     private final ListaActores listaActores;
     private final ListaPeliculas listaPeliculas;
     private boolean datosCargados;
@@ -13,6 +17,7 @@ public class Menu {
 
     public Menu(Lector lector, ListaActores listaActores, ListaPeliculas listaPeliculas) {
         this.lector = lector;
+        this.escritor = new Escritor(listaActores);
         this.listaActores = listaActores;
         this.listaPeliculas = listaPeliculas;
         this.datosCargados = false;
@@ -119,6 +124,8 @@ public class Menu {
                 modificarAnioPelicula();
             case 7 ->
                 mostrarMenuBorrado();
+            case 8 ->
+                guardarDatos();
             case 9 ->
                 nuevalistarActoresOrdenada();
             case 10 ->
@@ -288,6 +295,14 @@ public class Menu {
             if (anio == -1) {
                 return;
             }
+
+            if (nuevoActor.buscarEstreno(idPelicula, anio) != null
+                    || pelicula.buscarEstreno(idActor, anio) != null) {
+                System.out.println(i18n.get("msg.duplicado.relacion", anio,
+                        idActor, nombreActor, idPelicula, pelicula.getNombrePelicula()));
+                continue;
+            }
+
             Estreno estreno = new Estreno(pelicula, nuevoActor, anio);
             nuevoActor.agregarEstreno(estreno);
             pelicula.agregarEstreno(estreno);
@@ -315,6 +330,23 @@ public class Menu {
             datosCargados = true;
         }
 
+    }
+
+    private void guardarDatos() {
+        String rutaDefecto = "./exportados";
+
+        System.out.print(i18n.get("menu.opcion.8.insertar.ruta", rutaDefecto));
+        String ruta = Scaner.teclearString();
+        if (ruta.isEmpty()) {
+            ruta = rutaDefecto;
+        }
+
+        try {
+            escritor.escribirCarpeta(Paths.get(ruta));
+            System.out.println(i18n.get("msg.info.exportacion.completada", ruta));
+        } catch (IOException | InvalidPathException e) {
+            System.out.println(i18n.get("msg.error.exportacion", ruta));
+        }
     }
 
     private String solicitarIdPelicula() {
