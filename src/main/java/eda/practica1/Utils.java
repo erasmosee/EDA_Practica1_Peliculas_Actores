@@ -231,4 +231,71 @@ public class Utils {
         }
     }
 
+    public static <T extends Comparable<T>> void quickSort(ArrayList<T> tabla) {
+        quickSort(tabla, 0, (tabla.size() - 1));
+    }
+
+    private static <T extends Comparable<T>> void quickSort(ArrayList<T> tabla, int inicio, int fin) {
+        if (fin - inicio > 0) {
+            int indiceParticion = particion(tabla, inicio, fin);
+            quickSort(tabla, inicio, indiceParticion - 1);
+            quickSort(tabla, indiceParticion + 1, fin);
+
+        }
+    }
+
+    private static <T extends Comparable<T>> boolean esMayor(T mayor, T menor) {
+        return (mayor).compareTo(menor) > 0;
+    }
+
+    private static <T extends Comparable<T>> T medianaDeTres(T inicio, T centro, T fin) {
+        if (esMayor(inicio, centro)) {
+            if (esMayor(centro, fin)) {
+                return centro;
+            }
+            if (esMayor(inicio, fin)) {
+                return fin;
+            }
+            return inicio;
+        } else {
+            if (esMayor(inicio, fin)) {
+                return inicio;
+            }
+            if (esMayor(centro, fin)) {
+                return fin;
+            }
+            return centro;
+        }
+    }
+
+    private static <T extends Comparable<T>> int particion(ArrayList<T> tabla, int inicio, int fin) {
+        int centro = inicio + (fin - inicio) / 2;
+
+        T pivote = medianaDeTres(tabla.get(inicio), tabla.get(centro), tabla.get(fin));
+        int izq = inicio;
+        int der = fin;
+
+        while (izq < der) {
+            while (tabla.get(izq).compareTo(pivote) >= 0 && izq < der) {
+                izq++;
+            }
+            while (tabla.get(der).compareTo(pivote) < 0) {
+                der--;
+            }
+
+            if (izq < der) {
+                swap(tabla, izq, der);
+            }
+
+        }
+        tabla.set(inicio, tabla.get(der));
+        tabla.set(der, pivote);
+        return der;
+    }
+
+    private static <T extends Comparable<T>> void swap(ArrayList<T> tabla, int uno, int dos) {
+        T temp = tabla.get(uno);
+        tabla.set(uno, tabla.get(dos));
+        tabla.set(dos, temp);
+    }
 }

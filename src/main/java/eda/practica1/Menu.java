@@ -172,24 +172,37 @@ public class Menu {
 
     private void listarActoresOrdenada() {
         ArrayList<Actor> actores = new ArrayList<>(listaActores.getListaActores().values());
-    
+
         long tiempoMergeSort = Utils.iniciarCronometro();
         Utils.mergeSort(actores);
         tiempoMergeSort = Utils.pararCronometro(tiempoMergeSort);
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort"), tiempoMergeSort);
 
         long tiempoMergeSortInverso = Utils.iniciarCronometro();
-        Utils.mergeSort(actores,true);
+        Utils.mergeSort(actores, true);
         tiempoMergeSortInverso = Utils.pararCronometro(tiempoMergeSortInverso);
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort"), tiempoMergeSortInverso);
 
+        long tiempoQuickSort = Utils.iniciarCronometro();
+        Utils.quickSort(actores);
+        tiempoQuickSort = Utils.pararCronometro(tiempoQuickSort);
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.quick.sort"), tiempoQuickSort);
+
+        long tiempoQuickSortInverso = Utils.iniciarCronometro();
+        Utils.quickSort(actores);
+        tiempoQuickSortInverso = Utils.pararCronometro(tiempoQuickSortInverso);
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.quick.sort"), tiempoQuickSortInverso);
         long tiempoImprimir = Utils.iniciarCronometro();
+
         for (Actor actor : actores) {
             System.out.println(actor.getNombreActor() + " (" + actor.getIdActor() + ")");
+            Utils.ansiSubirFilas(1);
+            Utils.ansiIrPosicion(1);
+            Utils.ansiBorrarFila(2);
         }
         tiempoImprimir = Utils.pararCronometro(tiempoImprimir);
 
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort"),tiempoMergeSort);
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort"),tiempoMergeSortInverso);
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.imprimir"),tiempoImprimir);
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.imprimir"), tiempoImprimir);
     }
 
     private void procesarBorradoActor(int codigoBorrado) {
