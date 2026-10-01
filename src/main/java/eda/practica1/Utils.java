@@ -140,6 +140,13 @@ public class Utils {
         finalizarbarracarga();
     }
 
+    public static void saltoDeLinea(int filas) {
+        for (int i = 0; i < filas; i++) {
+            System.out.println("");
+        }
+
+    }
+
     public static void iniciarbarracarga() {
         System.out.print("Cargando[");
     }
@@ -180,12 +187,15 @@ public class Utils {
         System.out.println(mensaje + " " + tiempo);
     }
 
-    public static <T extends Comparable<T>> void mergeSort(ArrayList<T> tabla) {
-        mergeSort(tabla, 0, (tabla.size() - 1), false);
+    public static <T extends Comparable<T>> long mergeSort(ArrayList<T> tabla) {
+        return mergeSort(tabla, false);
     }
 
-    public static <T extends Comparable<T>> void mergeSort(ArrayList<T> tabla, boolean inverso) {
+    public static <T extends Comparable<T>> long mergeSort(ArrayList<T> tabla, boolean inverso) {
+        long tiempo = iniciarCronometro();
         mergeSort(tabla, 0, (tabla.size() - 1), inverso);
+        return pararCronometro(tiempo);
+
     }
 
     private static <T extends Comparable<T>> void mergeSort(ArrayList<T> tabla, int inicio, int fin, boolean inverso) {
@@ -231,8 +241,10 @@ public class Utils {
         }
     }
 
-    public static <T extends Comparable<T>> void quickSort(ArrayList<T> tabla) {
+    public static <T extends Comparable<T>> long quickSort(ArrayList<T> tabla) {
+        long tiempo = iniciarCronometro();
         quickSort(tabla, 0, (tabla.size() - 1));
+        return pararCronometro(tiempo);
     }
 
     private static <T extends Comparable<T>> void quickSort(ArrayList<T> tabla, int inicio, int fin) {
@@ -244,36 +256,13 @@ public class Utils {
         }
     }
 
-    private static <T extends Comparable<T>> boolean esMayor(T mayor, T menor) {
-        return (mayor).compareTo(menor) > 0;
-    }
-
-    private static <T extends Comparable<T>> T medianaDeTres(T inicio, T centro, T fin) {
-        if (esMayor(inicio, centro)) {
-            if (esMayor(centro, fin)) {
-                return centro;
-            }
-            if (esMayor(inicio, fin)) {
-                return fin;
-            }
-            return inicio;
-        } else {
-            if (esMayor(inicio, fin)) {
-                return inicio;
-            }
-            if (esMayor(centro, fin)) {
-                return fin;
-            }
-            return centro;
-        }
-    }
-
     private static <T extends Comparable<T>> int particion(ArrayList<T> tabla, int inicio, int fin) {
-        int centro = inicio + (fin - inicio) / 2;
-
-        T pivote = medianaDeTres(tabla.get(inicio), tabla.get(centro), tabla.get(fin));
         int izq = inicio;
+        int centro = inicio + (fin - inicio) / 2;
         int der = fin;
+
+        // T pivote = medianaDeTres(tabla.get(izq), tabla.get(centro), tabla.get(der));
+        T pivote = tabla.get(centro);
 
         while (izq < der) {
             while (tabla.get(izq).compareTo(pivote) >= 0 && izq < der) {
@@ -297,5 +286,22 @@ public class Utils {
         T temp = tabla.get(uno);
         tabla.set(uno, tabla.get(dos));
         tabla.set(dos, temp);
+    }
+
+    public static long imrpimirListado(ArrayList<Actor> actores) {
+        long tiempoImprimir = Utils.iniciarCronometro();
+        int contador = 0;
+        for (Actor actor : actores) {
+            Menu.imprimirNomIdActor(actor);
+
+            contador++;
+            if (contador % 25000 != 0) {
+                Utils.ansiSubirFilas(1);
+                Utils.ansiIrPosicion(1);
+                Utils.ansiBorrarFila(2);
+            }
+
+        }
+        return Utils.pararCronometro(tiempoImprimir);
     }
 }

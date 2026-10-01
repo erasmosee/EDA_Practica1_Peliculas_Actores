@@ -62,6 +62,7 @@ public class Menu {
             System.out.println(i18n.get("menu.opcion.10.4.ficha.pelicula"));
             System.out.println(i18n.get("menu.opcion.10.5.revisar.peliculas"));
             System.out.println(i18n.get("menu.opcion.10.6.revisar.actores"));
+            System.out.println(i18n.get("menu.opcion.10.7.mostrar.lista.actores"));
             System.out.println(i18n.get("menu.opcion.0.atras"));
             System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
 
@@ -119,7 +120,7 @@ public class Menu {
             case 7 ->
                 mostrarMenuBorrado();
             case 9 ->
-                listarActoresOrdenada();
+                nuevalistarActoresOrdenada();
             case 10 ->
                 mostrarMenuUtilidades();
             case 0 ->
@@ -145,6 +146,8 @@ public class Menu {
                 Utils.revisarNombresDuplicados(listaPeliculas);
             case 6 ->
                 Utils.revisarNombresDuplicados(listaActores);
+            case 7 ->
+                mostrarListaActores();
             case 0 ->
                 System.out.println(i18n.get("menu.opcion.10.utilidades.volver"));
             default ->
@@ -170,39 +173,26 @@ public class Menu {
 
     }
 
-    private void listarActoresOrdenada() {
+    public static void imprimirNomIdActor(Actor actor) {
+        System.out.println(actor.getNombreActor() + " (" + actor.getIdActor() + ")");
+    }
+
+    private void nuevalistarActoresOrdenada() {
         ArrayList<Actor> actores = new ArrayList<>(listaActores.getListaActores().values());
 
-        long tiempoMergeSort = Utils.iniciarCronometro();
-        Utils.mergeSort(actores);
-        tiempoMergeSort = Utils.pararCronometro(tiempoMergeSort);
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort"), tiempoMergeSort);
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort"), Utils.mergeSort(actores));
+        Utils.saltoDeLinea(1);
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.imprimir"), Utils.imrpimirListado(actores));
+        Utils.saltoDeLinea(1);
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort.inverso"), Utils.mergeSort(actores, true));
+        Utils.saltoDeLinea(1);
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.imprimir"), Utils.imrpimirListado(actores));
+        Utils.saltoDeLinea(1);
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.quick.sort"), Utils.quickSort(actores));
+        Utils.saltoDeLinea(1);
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.imprimir"), Utils.imrpimirListado(actores));
+        Utils.saltoDeLinea(1);
 
-        long tiempoMergeSortInverso = Utils.iniciarCronometro();
-        Utils.mergeSort(actores, true);
-        tiempoMergeSortInverso = Utils.pararCronometro(tiempoMergeSortInverso);
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort"), tiempoMergeSortInverso);
-
-        long tiempoQuickSort = Utils.iniciarCronometro();
-        Utils.quickSort(actores);
-        tiempoQuickSort = Utils.pararCronometro(tiempoQuickSort);
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.quick.sort"), tiempoQuickSort);
-
-        long tiempoQuickSortInverso = Utils.iniciarCronometro();
-        Utils.quickSort(actores);
-        tiempoQuickSortInverso = Utils.pararCronometro(tiempoQuickSortInverso);
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.quick.sort"), tiempoQuickSortInverso);
-        long tiempoImprimir = Utils.iniciarCronometro();
-
-        for (Actor actor : actores) {
-            System.out.println(actor.getNombreActor() + " (" + actor.getIdActor() + ")");
-            Utils.ansiSubirFilas(1);
-            Utils.ansiIrPosicion(1);
-            Utils.ansiBorrarFila(2);
-        }
-        tiempoImprimir = Utils.pararCronometro(tiempoImprimir);
-
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.imprimir"), tiempoImprimir);
     }
 
     private void procesarBorradoActor(int codigoBorrado) {
@@ -509,4 +499,25 @@ public class Menu {
         }
     }
 
+    private void mostrarListaActores() {
+        ArrayList<Actor> actores = new ArrayList<>(listaActores.getListaActores().values());
+
+        long tiempoImprimir = Utils.iniciarCronometro();
+        int contador = 0;
+        for (Actor actor : actores) {
+            System.out.println(actor.getNombreActor() + " (" + actor.getIdActor() + ")");
+
+            contador++;
+            if (contador % 25000 != 0) {
+                Utils.ansiSubirFilas(1);
+                Utils.ansiIrPosicion(1);
+                Utils.ansiBorrarFila(2);
+            }
+
+        }
+        tiempoImprimir = Utils.pararCronometro(tiempoImprimir);
+
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.imprimir"), tiempoImprimir);
+
+    }
 }

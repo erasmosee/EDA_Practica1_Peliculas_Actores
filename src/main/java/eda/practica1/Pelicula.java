@@ -217,4 +217,5 @@ public class Pelicula implements Comparable<Pelicula> {
     public int compareTo(Pelicula otraPelicula) {
         return nombrePelicula.compareToIgnoreCase(otraPelicula.nombrePelicula);
     }
+    
 }
