@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Menu {
 
     private final Lector lector;
-    private final Escritor escritor;
+    private final Grabador grabador;
     private final ListaActores listaActores;
     private final ListaPeliculas listaPeliculas;
     private boolean datosCargados;
@@ -17,7 +17,7 @@ public class Menu {
 
     public Menu(Lector lector, ListaActores listaActores, ListaPeliculas listaPeliculas) {
         this.lector = lector;
-        this.escritor = new Escritor(listaActores);
+        this.grabador = new Grabador(listaActores);
         this.listaActores = listaActores;
         this.listaPeliculas = listaPeliculas;
         this.datosCargados = false;
@@ -268,8 +268,8 @@ public class Menu {
 
         String idActor = Utils.generarIdActor(listaActores);
         Actor nuevoActor = new Actor(idActor, nombreActor);
-        Pelicula pelicula = null;
-        int anio = 0;
+        Pelicula pelicula;
+        int anio;
         System.out.print(i18n.get("menu.opcion.numero.peliculas"));
 
         int numPeliculas = Scaner.teclearInteger();
@@ -342,7 +342,7 @@ public class Menu {
         }
 
         try {
-            escritor.escribirCarpeta(Paths.get(ruta));
+            grabador.escribirCarpeta(Paths.get(ruta));
             System.out.println(i18n.get("msg.info.exportacion.completada", ruta));
         } catch (IOException | InvalidPathException e) {
             System.out.println(i18n.get("msg.error.exportacion", ruta));
