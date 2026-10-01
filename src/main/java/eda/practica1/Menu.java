@@ -118,6 +118,8 @@ public class Menu {
                 modificarAnioPelicula();
             case 7 ->
                 mostrarMenuBorrado();
+            case 9 ->
+                listarActoresOrdenada();
             case 10 ->
                 mostrarMenuUtilidades();
             case 0 ->
@@ -166,6 +168,28 @@ public class Menu {
                 System.out.println(i18n.get("msg.opcion.invalida"));
         }
 
+    }
+
+    private void listarActoresOrdenada() {
+        ArrayList<Actor> actores = new ArrayList<>(listaActores.getListaActores().values());
+    
+        long tiempoMergeSort = Utils.iniciarCronometro();
+        Utils.mergeSort(actores);
+        tiempoMergeSort = Utils.pararCronometro(tiempoMergeSort);
+
+        long tiempoMergeSortInverso = Utils.iniciarCronometro();
+        Utils.mergeSort(actores,true);
+        tiempoMergeSortInverso = Utils.pararCronometro(tiempoMergeSortInverso);
+
+        long tiempoImprimir = Utils.iniciarCronometro();
+        for (Actor actor : actores) {
+            System.out.println(actor.getNombreActor() + " (" + actor.getIdActor() + ")");
+        }
+        tiempoImprimir = Utils.pararCronometro(tiempoImprimir);
+
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort"),tiempoMergeSort);
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort"),tiempoMergeSortInverso);
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.imprimir"),tiempoImprimir);
     }
 
     private void procesarBorradoActor(int codigoBorrado) {

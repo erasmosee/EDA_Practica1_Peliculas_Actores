@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class Actor {
+public class Actor implements Comparable<Actor> {
 
     String idActor;
     String nombreActor;
@@ -124,5 +124,10 @@ public class Actor {
 
             }
         }
+    }
+
+    @Override
+    public int compareTo(Actor otroActor) {
+        return nombreActor.compareToIgnoreCase(otroActor.nombreActor);
     }
 }

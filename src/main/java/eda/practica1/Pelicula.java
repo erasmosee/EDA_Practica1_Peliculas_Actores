@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class Pelicula {
+public class Pelicula implements Comparable<Pelicula> {
 
     String idPelicula;
     String nombrePelicula;
@@ -211,5 +211,10 @@ public class Pelicula {
 
             }
         }
+    }
+    
+    @Override
+    public int compareTo(Pelicula otraPelicula) {
+        return nombrePelicula.compareToIgnoreCase(otraPelicula.nombrePelicula);
     }
 }
