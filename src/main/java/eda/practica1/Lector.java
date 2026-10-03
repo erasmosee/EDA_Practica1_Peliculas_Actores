@@ -23,6 +23,7 @@ public class Lector {
     public boolean leerCarpeta(String rutaCarpeta) {
         boolean retorno = false;
         try {
+            long tiempoCarga = Utils.iniciarCronometro();
             File carpeta = new File(rutaCarpeta);
             File[] ficheros = carpeta.listFiles();
             int totalRegistros = 0;
@@ -65,8 +66,9 @@ public class Lector {
                 Utils.finalizarbarracarga();
                 System.out.println();
             }
-            System.out.println(i18n.get("msg.info.registros.procesados",
-                    totalRegistros, totalRegistrosEfectivos, totalRegistrosDuplicados));
+            System.out.println(i18n.get("msg.info.registros.procesados",totalRegistros, totalRegistrosEfectivos, totalRegistrosDuplicados));
+            System.out.println(i18n.get("msg.tiempo.carga.ficheros",Utils.pararCronometro(tiempoCarga)));
+                    
             retorno = true;
         } catch (Exception e) {
             System.out.println(i18n.get("msg.error.acceso.carpeta", (rutaCarpeta)));

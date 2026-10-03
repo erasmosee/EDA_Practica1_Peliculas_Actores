@@ -102,6 +102,28 @@ public class Menu {
         }
     }
 
+    private void mostrarMenuOrdenacion(int veces) {
+        int opcion = -1;
+
+        while (opcion != 0) {
+            System.out.println("\n" + i18n.get("menu.texto.ordenacion", veces));
+            System.out.println(i18n.get("menu.opcion.9.merge.sort"));
+            System.out.println(i18n.get("menu.opcion.9.merge.sort.inverso"));
+            System.out.println(i18n.get("menu.opcion.9.quick.sort"));
+            System.out.println(i18n.get("menu.opcion.9.ciclar.ordenacion"));
+            System.out.println(i18n.get("menu.opcion.0.atras"));
+            System.out.print(i18n.get("menu.texto.seleccionar.opcion"));
+
+            try {
+                opcion = Scaner.teclearInteger();
+                procesarOpcionOrdenacion(opcion, veces);
+            } catch (NumberFormatException e) {
+                System.out.println(i18n.get("msg.opcion.invalida"));
+            }
+
+        }
+    }
+
     private void procesarOpcion(int opcion) {
 
         if (!datosCargados && opcion > 1) {
@@ -127,7 +149,7 @@ public class Menu {
             case 8 ->
                 guardarDatos();
             case 9 ->
-                nuevalistarActoresOrdenada();
+                mostrarMenuOrdenacion(1);
             case 10 ->
                 mostrarMenuUtilidades();
             case 0 ->
@@ -180,26 +202,73 @@ public class Menu {
 
     }
 
+    private void procesarOpcionOrdenacion(int opcion, int veces) {
+
+        switch (opcion) {
+            case 1 ->
+                ordenarPorMergeSort(veces, false);
+            case 2 ->
+                ordenarPorMergeSort(veces, true);
+            case 3 ->
+                ordenarPorQuickSort(veces);
+            case 4 ->
+                ordenarVariasVeces();
+
+            case 0 ->
+                System.out.println(i18n.get("menu.opcion.10.utilidades.volver"));
+            default ->
+                System.out.println(i18n.get("msg.opcion.invalida"));
+        }
+
+    }
+
     public static void imprimirNomIdActor(Actor actor) {
         System.out.println(actor.getNombreActor() + " (" + actor.getIdActor() + ")");
     }
 
-    private void nuevalistarActoresOrdenada() {
+    private void ordenarVariasVeces() {
+        System.out.println(i18n.get("menu.opcion.9.veces.ciclar"));
+        int veces = Scaner.teclearInteger();
+        mostrarMenuOrdenacion(veces);
+    }
+
+    private void ordenarPorMergeSort(int veces, boolean inverso) {
+        ArrayList<Actor> actores = new ArrayList<>(listaActores.getListaActores().values());
+        for (int i = 0; i < veces; i++) {
+            Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort"), Utils.mergeSort(actores, inverso));
+        }
+    }
+
+    private void ordenarPorQuickSort(int veces) {
+        ArrayList<Actor> actores = new ArrayList<>(listaActores.getListaActores().values());
+        for (int i = 0; i < veces; i++) {
+            Utils.mostrarTiempo(i18n.get("msg.tiempo.quick.sort"), Utils.quickSort(actores));
+        }
+
+    }
+
+    private void mostrarlistarActoresOrdenada(int opcion) {
         ArrayList<Actor> actores = new ArrayList<>(listaActores.getListaActores().values());
 
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort"), Utils.mergeSort(actores));
-        Utils.saltoDeLinea(1);
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.imprimir"), Utils.imrpimirListado(actores));
-        Utils.saltoDeLinea(1);
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort.inverso"), Utils.mergeSort(actores, true));
-        Utils.saltoDeLinea(1);
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.imprimir"), Utils.imrpimirListado(actores));
-        Utils.saltoDeLinea(1);
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.quick.sort"), Utils.quickSort(actores));
-        Utils.saltoDeLinea(1);
-        Utils.mostrarTiempo(i18n.get("msg.tiempo.imprimir"), Utils.imrpimirListado(actores));
-        Utils.saltoDeLinea(1);
+        switch (opcion) {
+            case 1 -> {
+                Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort"), Utils.mergeSort(actores));
+                Utils.saltoDeLinea(1);
+            }
+            case 2 -> {
+                Utils.mostrarTiempo(i18n.get("msg.tiempo.merge.sort.inverso"), Utils.mergeSort(actores, true));
+                Utils.saltoDeLinea(1);
+            }
+            case 3 -> {
+                Utils.mostrarTiempo(i18n.get("msg.tiempo.quick.sort"), Utils.quickSort(actores));
+                Utils.saltoDeLinea(1);
+            }
 
+            default ->
+                System.out.println(i18n.get("msg.opcion.invalida"));
+        }
+        Utils.mostrarTiempo(i18n.get("msg.tiempo.imprimir"), Utils.imrpimirListado(actores));
+        Utils.saltoDeLinea(1);
     }
 
     private void procesarBorradoActor(int codigoBorrado) {
