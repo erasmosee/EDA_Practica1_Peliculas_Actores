@@ -1,4 +1,5 @@
 {
+    "java.configuration.updateBuildConfiguration": "interactive",
     "terminal.integrated.profiles.windows": {
         "PowerShell UTF-8": {
             "source": "PowerShell",
@@ -10,5 +11,5 @@
         }
     },
     "terminal.integrated.defaultProfile.windows": "PowerShell UTF-8",
-    "maven.executable.path": "C:/Users/erasm/scoop/apps/maven/current/bin/mvn.cmd"
+    "java.debug.settings.console": "integratedTerminal"
 }
